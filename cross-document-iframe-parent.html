@@ -49,7 +49,28 @@
       document.getElementById('generate-button').style.display = 'inline-block';
     }
 
+    /*********************************************************************/
+    /* Below contains custom element creating shadow element with iframe */
+    /*********************************************************************/
 
+    const childIframeSrc = "https://cobrowseio.github.io/cobrowse-sdk-js-examples/cross-document-iframe-child.html";
+
+    // Define the custom element
+    class shadowCustomElement extends HTMLElement {
+      constructor() {
+        super();
+
+        // Create the shadow DOM
+        const shadow = this.attachShadow({ mode: 'open' });
+        const content_area = document.createElement('div');
+        content_area.innerHTML = `<iframe src="${childIframeSrc}" height="400px" width="100%"></iframe>`;
+
+        shadow.appendChild(content_area);
+      }
+    }
+
+    // Register the custom element with the browser
+    customElements.define('shadow-custom-element', shadowCustomElement);
   </script>
   <style>
     body {
@@ -83,6 +104,11 @@
       -ms-user-select: none;
       user-select: none;
     }
+
+    #iframe-containers {
+      display: flex;
+      justify-content: space-evenly;
+    }
   </style>
 </head>
 
@@ -94,11 +120,12 @@
       <div id="support-code"></div>
     <button id="generate-button" onclick="generateSupportCode();">Generate Support Code</button>  
       <div style="height: 40px;"></div>
-    <div>
+
+    <div id="iframe-containers">
       <iframe src="https://cobrowseio.github.io/cobrowse-sdk-js-examples/cross-document-iframe-child.html" height="400px" width="30%"></iframe>
+      <shadow-custom-element style="width:30%" ></shadow-custom-element>
     </div>
-    </div>
-  
+
 </body>
 
 </html>
