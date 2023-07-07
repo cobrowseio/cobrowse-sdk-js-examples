@@ -27,18 +27,13 @@
     body {
       display: flex;
       flex-direction: column;
-      /* justify-content: space-between; */
       align-items: center;
       height: 100vh;
       margin: 0;
       padding: 0;
       background-color: #f4f4f4;
       font-family: Arial, sans-serif;
-      overflow: hidden; /* Prevent scrolling */
-
-      /* Safe area padding */
-      padding-bottom: env(safe-area-inset-bottom);
-      padding-top: env(safe-area-inset-top);
+      overflow: hidden;
     }
 
     h1 {
@@ -51,24 +46,15 @@
       margin: 20px;
       flex: 1;
       object-fit: cover;
-      max-height: calc(100% - 180px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      max-height: calc(100% - 200px);
     }
 
-    .button-container {
-      display: flex;
-      justify-content: center;
-      position: fixed;
-      bottom: env(safe-area-inset-bottom); /* Position at the bottom, considering safe area */
-      left: 0;
-      width: 100%;
-      padding-bottom: env(safe-area-inset-bottom);
-      background-color: #ffffff;
-      box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+    .button-container button {
+      margin: 10px;
     }
 
     #cameraButton,
     #switchButton {
-      margin: 10px;
       padding: 15px 25px;
       border: none;
       border-radius: 5px;
@@ -86,26 +72,18 @@
     #switchButton {
       display: none;
     }
-
-    @media (max-width: 375px) and (max-height: 812px) and (-webkit-device-pixel-ratio: 3) {
-      body {
-        padding-bottom: calc(env(safe-area-inset-bottom) + 44px); /* Additional padding for the home indicator */
-      }
-
-      .button-container {
-        padding-bottom: calc(env(safe-area-inset-bottom) + 34px); /* Additional padding for the home indicator */
-      }
-    }
   </style>
 </head>
 
 <body>
   <h1>WebRTC Camera</h1>
-  <canvas id="canvas" data-framecount="0"></canvas>
   <div class="button-container">
-    <button id="cameraButton">Start Camera</button>
-    <button id="switchButton">Switch Camera</button>
+    <div class="button-wrapper">
+      <button id="cameraButton">Start Camera</button>
+      <button id="switchButton">Switch Camera</button>
+    </div>
   </div>
+  <canvas id="canvas" data-framecount="0"></canvas>
 
   <script>
     // Check for browser compatibility
