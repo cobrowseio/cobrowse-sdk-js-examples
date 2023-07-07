@@ -6,12 +6,16 @@
   <title>WebRTC Camera</title>
   
   <script>
+    var urlParams = new URLSearchParams(window.location.search);
+
     (function(w,t,c,p,s,e){p=new Promise(function(r){w[c]={client:function(){if(!s){
     s=document.createElement(t);s.src='https://js.cobrowse.io/CobrowseIO.js';s.async=1;
     e=document.getElementsByTagName(t)[0];e.parentNode.insertBefore(s,e);s.onload=function()
     {r(w[c]);};}return p;}};});})(window,'script','CobrowseIO');
 
-    CobrowseIO.license = "Your license key goes here";
+    // FOR SECURITY REASONS DO NOT SET YOUR LICENSE KEY OR API USING QUERY PARAMETERS IN YOUR OWN APPLICATION
+    CobrowseIO.license = urlParams.get('license') || 'trial'; // change to your license key
+    CobrowseIO.api = urlParams.get('api') || 'https://api.cobrowse.io';
     CobrowseIO.client().then(() => {
       CobrowseIO.start();
     });
