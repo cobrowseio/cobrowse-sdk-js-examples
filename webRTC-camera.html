@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <title>WebRTC Camera</title>
   
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
   <script>
     var urlParams = new URLSearchParams(window.location.search);
 
@@ -22,18 +24,88 @@
   </script>
 
   <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      /* justify-content: space-between; */
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+      overflow: hidden; /* Prevent scrolling */
+
+      /* Safe area padding */
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-top: env(safe-area-inset-top);
+    }
+
+    h1 {
+      margin-top: 2%;
+      color: #505050;
+    }
+
     #canvas {
+      width: calc(100% - 40px);
+      margin: 20px;
+      flex: 1;
+      object-fit: cover;
+      max-height: calc(100% - 180px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      position: fixed;
+      bottom: env(safe-area-inset-bottom); /* Position at the bottom, considering safe area */
+      left: 0;
       width: 100%;
-      height: auto;
+      padding-bottom: env(safe-area-inset-bottom);
+      background-color: #ffffff;
+      box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #cameraButton,
+    #switchButton {
+      margin: 10px;
+      padding: 15px 25px;
+      border: none;
+      border-radius: 5px;
+      background-color: rgb(97, 0, 255);
+      color: #ffffff;
+      font-size: 1em;
+      transition: background-color 0.3s;
+    }
+
+    #cameraButton:hover,
+    #switchButton:hover {
+      background-color: rgb(75, 0, 200);
+    }
+
+    #switchButton {
+      display: none;
+    }
+
+    @media (max-width: 375px) and (max-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+      body {
+        padding-bottom: calc(env(safe-area-inset-bottom) + 44px); /* Additional padding for the home indicator */
+      }
+
+      .button-container {
+        padding-bottom: calc(env(safe-area-inset-bottom) + 34px); /* Additional padding for the home indicator */
+      }
     }
   </style>
 </head>
 
 <body>
   <h1>WebRTC Camera</h1>
-  <button id="startButton">Start Camera</button>
-  <button id="switchButton">Switch Camera</button>
   <canvas id="canvas" data-framecount="0"></canvas>
+  <div class="button-container">
+    <button id="cameraButton">Start Camera</button>
+    <button id="switchButton">Switch Camera</button>
+  </div>
 
   <script>
     // Check for browser compatibility
@@ -48,40 +120,46 @@
       let currentStream;
       let frameCount = 0;
 
-      // Start camera when the start button is clicked
-      const startButton = document.getElementById('startButton');
+      const cameraButton = document.getElementById('cameraButton');
+      const switchButton = document.getElementById('switchButton');
 
-      startButton.addEventListener('click', () => {
+      cameraButton.addEventListener('click', () => {
         if (!currentStream) {
           navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
             .then((stream) => {
               videoElement.srcObject = stream;
               videoElement.play();
               currentStream = stream;
+              cameraButton.textContent = "Stop Camera";
+              switchButton.style.display = "inline-block";
 
-              // Wait for video metadata to load
               videoElement.onloadedmetadata = () => {
                 canvas.width = videoElement.videoWidth;
                 canvas.height = videoElement.videoHeight;
 
-                // Draw the video frames onto the canvas
                 const drawVideoFrame = () => {
                   context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
                   requestAnimationFrame(drawVideoFrame);
                 };
 
-                // Start drawing the video frames
                 drawVideoFrame();
               };
             })
             .catch((error) => {
               console.error('Error accessing the camera: ', error);
             });
+        } else {
+          // Stop the current camera stream
+          currentStream.getTracks().forEach((track) => {
+            track.stop();
+          });
+
+          currentStream = null;
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          cameraButton.textContent = "Start Camera";
+          switchButton.style.display = "none";
         }
       });
-
-      // Switch between front and back camera when the switch button is clicked
-      const switchButton = document.getElementById('switchButton');
 
       switchButton.addEventListener('click', () => {
         if (currentStream) {
@@ -115,7 +193,6 @@
       });
 
       // Timer to increment frame count every 500 milliseconds
-      // This is to control how often the canvas is updated for the agnet to see
       setInterval(() => {
         frameCount++;
         canvas.dataset.framecount = frameCount;
