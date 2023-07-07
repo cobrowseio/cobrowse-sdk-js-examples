@@ -80,3 +80,15 @@ Documentation at [https://docs.cobrowse.io/sdk-features/advanced-features/web/cr
 3. Begin a session to see that the iframe can be successfully viewed by the agent.
 4. Replace the iframed content with your own as needed. The child iframe page must be accessible with its url specified. The parent url must also be added to CobrowseIO.trustedOrigins in the child page, see [https://cobrowse-sdk-js-examples.cbrws.io/cross-document-iframe-child.html](https://cobrowse-sdk-js-examples.cbrws.io/cross-document-iframe-child.html). 
 5. Deploy as a standalone page, or embed similar html, css, and javascript in your site.
+
+## WebRTC camera
+
+Demo page at [https://cobrowse-sdk-js-examples.cbrws.io/webRTC-camera.html](https://cobrowse-sdk-js-examples.cbrws.io/webRTC-camera.html)
+
+Documentation at [https://docs.cobrowse.io/sdk-installation/web](https://docs.cobrowse.io/sdk-installation/web)
+
+1. Clone the repo and open webRTC-camera.html in your browser.
+2. Replace CobrowseIO.license with your license key (register a new account at [https://cobrowse.io/register](https://cobrowse.io/register)).
+3. Click the Start camera button and allow the browser to use your camera.
+4. Begin a session to see that the camera feed can be successfully viewed by the agent.
+5. Use the Switch camera button to change between camera feeds if available.

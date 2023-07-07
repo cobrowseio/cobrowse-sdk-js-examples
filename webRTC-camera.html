@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>WebRTC Camera</title>
+  
+  <script>
+    (function(w,t,c,p,s,e){p=new Promise(function(r){w[c]={client:function(){if(!s){
+    s=document.createElement(t);s.src='https://js.cobrowse.io/CobrowseIO.js';s.async=1;
+    e=document.getElementsByTagName(t)[0];e.parentNode.insertBefore(s,e);s.onload=function()
+    {r(w[c]);};}return p;}};});})(window,'script','CobrowseIO');
+
+    CobrowseIO.license = "Your license key goes here";
+    CobrowseIO.client().then(() => {
+      CobrowseIO.start();
+    });
+  </script>
+
+  <style>
+    #canvas {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>WebRTC Camera</h1>
+  <canvas id="canvas" data-framecount="0"></canvas>
+  <button id="startButton">Start Camera</button>
+  <button id="switchButton">Switch Camera</button>
+
+  <script>
+    // Check for browser compatibility
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      const videoElement = document.createElement('video');
+      videoElement.setAttribute('playsinline', '');
+      videoElement.style.display = 'none';
+
+      const canvas = document.getElementById('canvas');
+      const context = canvas.getContext('2d');
+
+      let currentStream;
+      let frameCount = 0;
+
+      // Start camera when the start button is clicked
+      const startButton = document.getElementById('startButton');
+
+      startButton.addEventListener('click', () => {
+        if (!currentStream) {
+          navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            .then((stream) => {
+              videoElement.srcObject = stream;
+              videoElement.play();
+              currentStream = stream;
+
+              // Wait for video metadata to load
+              videoElement.onloadedmetadata = () => {
+                canvas.width = videoElement.videoWidth;
+                canvas.height = videoElement.videoHeight;
+
+                // Draw the video frames onto the canvas
+                const drawVideoFrame = () => {
+                  context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                  requestAnimationFrame(drawVideoFrame);
+                };
+
+                // Start drawing the video frames
+                drawVideoFrame();
+              };
+            })
+            .catch((error) => {
+              console.error('Error accessing the camera: ', error);
+            });
+        }
+      });
+
+      // Switch between front and back camera when the switch button is clicked
+      const switchButton = document.getElementById('switchButton');
+
+      switchButton.addEventListener('click', () => {
+        if (currentStream) {
+          const tracks = currentStream.getTracks();
+
+          // Stop the current camera stream
+          tracks.forEach((track) => {
+            track.stop();
+          });
+
+          // Get the current facing mode of the video track
+          const currentFacingMode = tracks[0].getSettings().facingMode;
+
+          // Define the new facing mode to switch to
+          const newFacingMode = (currentFacingMode === 'environment') ? 'user' : 'environment';
+
+          // Create the new constraints object with the new facing mode
+          const constraints = { video: { facingMode: newFacingMode } };
+
+          // Start the new camera stream with the updated constraints
+          navigator.mediaDevices.getUserMedia(constraints)
+            .then((stream) => {
+              videoElement.srcObject = stream;
+              videoElement.play();
+              currentStream = stream;
+            })
+            .catch((error) => {
+              console.error('Error switching camera: ', error);
+            });
+        }
+      });
+
+      // Timer to increment frame count every 500 milliseconds
+      // This is to control how often the canvas is updated for the agnet to see
+      setInterval(() => {
+        frameCount++;
+        canvas.dataset.framecount = frameCount;
+      }, 500);
+
+      // Attach the video element to the document
+      document.body.appendChild(videoElement);
+    } else {
+      console.error('WebRTC is not supported in this browser.');
+    }
+  </script>
+</body>
+
+</html>
