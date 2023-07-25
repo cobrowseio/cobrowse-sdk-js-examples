@@ -92,3 +92,16 @@ Documentation at [https://docs.cobrowse.io/sdk-installation/web](https://docs.co
 3. Click the Start camera button and allow the browser to use your camera.
 4. Begin a session to see that the camera feed can be successfully viewed by the agent.
 5. Use the Switch camera button to change between camera feeds if available.
+
+## Connection last alive check
+
+Demo page at [https://cobrowse-sdk-js-examples.cbrws.io/connection-last-alive-check.html](https://cobrowse-sdk-js-examples.cbrws.io/connection-last-alive-check.html)
+
+Documentation at [https://docs.cobrowse.io/sdk-features/listening-for-events](https://docs.cobrowse.io/sdk-features/listening-for-events)
+
+1. Clone the repo and open connection-last-alive-check.html in your browser.
+2. Replace CobrowseIO.license with your license key (register a new account at [https://cobrowse.io/register](https://cobrowse.io/register)).
+3. Start a session and see the session indicator change to green once the alive check has completed
+4. Disrupt the connection by disconnecting the Internet connection for either the client, agent or both.
+6. Wait 9 - 10 seconds and see the status indicator and agent have been told the connection has been lost.
+7. Enable the Internet connection and see the session restore and the status update to active.

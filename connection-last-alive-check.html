@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='initial-scale=1, viewport-fit=cover'>
+    <title>Connection last alive check </title>
+
+    <script>
+        (function(w,t,c,p,s,e){p=new Promise(function(r){w[c]={client:function(){if(!s){
+        s=document.createElement(t);s.src='https://js.cobrowse.io/CobrowseIO.js';s.async=1;
+        e=document.getElementsByTagName(t)[0];e.parentNode.insertBefore(s,e);s.onload=function()
+        {r(w[c]);};}return p;}};});})(window,'script','CobrowseIO');
+
+        const monitorConnection = (session) => {
+            const interval = setInterval(() => {
+                var color = '#FFBF00';
+
+                // Get the time of the last alive message
+                const last_alive = session.metrics.last_alive?.getTime();
+
+                if(last_alive) {
+                    const age = Date.now() - last_alive;
+
+                    // If the last alive message is older than 9 seconds, indicate a connection issue
+                    // This is an example, you may want to use a different threshold
+                    color = age > 9000 ? 'red' : 'green';
+                }
+
+                setStatusIndicatorColor(color);
+            }, 1000);
+
+            session.on('ended', () => {
+                clearInterval(interval);
+                setStatusIndicatorColor('grey');
+            });
+        };
+
+        const setStatusIndicatorColor = (color) => {
+            const statusIndicator = document.getElementById('status-indicator');
+            if (statusIndicator) statusIndicator.style.backgroundColor = color;
+        };
+
+        (async () => {
+            var urlParams = new URLSearchParams(window.location.search);
+            
+            // FOR SECURITY REASONS DO NOT SET YOUR LICENSE KEY OR API USING QUERY PARAMETERS IN YOUR OWN APPLICATION
+            CobrowseIO.license = urlParams.get('license') || 'trial'; // change to your license key
+            CobrowseIO.api = urlParams.get('api') || 'https://api.cobrowse.io';
+            
+            await CobrowseIO.client();
+            await CobrowseIO.start();
+
+            // If we are in an active session, start monitoring the connection for the active session
+            if (CobrowseIO.currentSession) monitorConnection(CobrowseIO.currentSession)
+            
+            // Always listen for new sessions and start monitoring the connection when they load
+            CobrowseIO.on('session.loaded', monitorConnection);
+        })();
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="status-indicator-container">
+            <div class="section-title">Session Status</div>
+            <div class="session-status-indicator" id="status-indicator"></div>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="status-keys-container">
+            <div class="section-title">Status Key</div>
+            <div class="status-key">
+                <div class="status-color" style="background-color: grey;"></div>
+                <span>No session</span>
+            </div>
+            <div class="status-key">
+                <div class="status-color" style="background-color: green;"></div>
+                <span>Session active</span>
+            </div>
+            <div class="status-key">
+                <div class="status-color" style="background-color: #FFBF00;"></div>
+                <span>Waiting on live check</span>
+            </div>
+            <div class="status-key">
+                <div class="status-color" style="background-color: red;"></div>
+                <span>Connection issue</span>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 20em;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .status-indicator-container {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .session-status-indicator {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: gray;
+        }
+
+        .status-keys-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .age {
+            margin-top: 10px;
+        }
+
+        .status-key {
+            display: flex;
+            align-items: center;
+            margin: 5px;
+        }
+
+        .status-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .separator {
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+            margin: 20px 0;
+        }
+    </style>
+</body>
+
+</html>
