@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Agent Present Mode UI Example</title>
+  <script type="text/javascript">
+    (function(w,t,c,p,s,e){p=new Promise(function(r){w[c]={client:function(){if(!s){
+    s=document.createElement(t);s.src='https://js.cobrowse.io/CobrowseIO.js';s.async=1;
+    e=document.getElementsByTagName(t)[0];e.parentNode.insertBefore(s,e);s.onload=function()
+    {r(w[c]);};}return p;}};});})(window,'script','CobrowseIO');
+
+    (async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // FOR SECURITY REASONS DO NOT SET YOUR LICENSE KEY OR API USING QUERY PARAMETERS IN YOUR OWN APPLICATION
+      CobrowseIO.license = urlParams.get('license') || 'trial'; // change to your license key
+      CobrowseIO.api = urlParams.get('api') || 'https://api.cobrowse.io';
+
+      // Disable capabilities so that the end user is not able to enable remote control or full device mode
+      CobrowseIO.capabilities = []
+      
+      await CobrowseIO.client();
+      await CobrowseIO.start();
+    })();
+
+    const Alert = () => {
+      let container = document.createElement('div');
+
+      const content = (title, description) => {
+        return `
+        <div style="background: rgba(50, 50, 50, 0.4); position: fixed; z-index: 2147483647; bottom: 0; top: 0; left: 0; right: 0">
+          <div style="color: #333; font-family:sans-serif; line-height:140%; position:fixed; padding:25px; background:white; border-radius:15px; z-index:2147483647; top:50px; left:50%; width:75%; max-width:350px; transform:translateX(-50%); box-shadow:0px 0px 15px #33333322;">
+            <div style="text-align:center; margin-top:10px; margin-bottom:20px"><b>${title}</b></div>
+              Enter the 6 digit code below to start a session
+              <br>
+              <input type="text" id="modalCode" value="">
+              <button id="modalSubmitButton" type="button">Start Session</button>
+            <div style="float:right; margin-top:40px; color:rgb(0, 122, 255);">
+              <a class="cobrowse-close" style="cursor:pointer; padding:10px;">Close</a>
+            </div>
+          </div>
+        </div>
+        `;
+      };
+
+      let show = (title, description) => {
+        container.innerHTML = content(title, description);
+        container.querySelector('.cobrowse-close').addEventListener('click', hide);
+
+        const code = container.querySelector('#modalCode');
+        container.querySelector('#modalSubmitButton').addEventListener("click", () => {
+            CobrowseIO.getSession(code.value);
+            hide();
+        });
+        if (document.body) document.body.appendChild(container);
+      }
+
+      let hide = () => {
+        if (container.parentNode) container.parentNode.removeChild(container);
+      }
+
+      return {
+        show: show,
+        hide: hide
+      }
+    }
+
+    const showAgentPresentModeModal = () => {
+      // ensure Cobrowse is loaded
+      CobrowseIO.client().then(() => {
+        // show the modal for the agent to input the 6 digit code
+        Alert().show('Agent Present Mode');
+      });
+    }
+  </script>
+</head>
+
+<body>
+  <h1>Cobrowse.io Agent Present Mode Example</h1>
+  <div>
+    This is an example of how to integrate the agent present mode into your web app.
+  </div>
+  <div>
+    On your Cobrowse.io enabled website you will need to provide a UI for the 6-digit code to be set.
+  </div>
+  <div style="height: 40px;"></div>
+  <h2>Simple Input box</h2>
+  <div>
+    Enter the 6 digit code in the input box below to start a session
+    <br>
+    <input type="text" id="code" value="">
+    <button id="submitButton" type="button">Start Session</button>
+    <script>
+      const code = document.getElementById("code");
+      document.getElementById("submitButton").addEventListener("click", () => {
+        CobrowseIO.getSession(code.value)
+      });
+    </script>
+  </div>
+  <div style="height: 40px;"></div>
+  <h2>Modal Window</h2>
+  <div>
+    Open a modal window with an input box to start a session
+    <button id="openModalButton" type="button">Open Modal</button>
+    <script>
+      document.getElementById("openModalButton").addEventListener("click", () => {
+        showAgentPresentModeModal();
+      });
+    </script>
+  </div>
+  <div style="height: 40px;"></div>
+  <div>
+    Once the 6-digit code is entered and passed to CobrowseIO.getSession(code) the session will be started on the
+    current site.
+  </div>
+  <div id="modalWindow"></div>
+</body>
+
+</html>

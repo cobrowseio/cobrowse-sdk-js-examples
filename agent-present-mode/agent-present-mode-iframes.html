@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Agent Present Mode Iframes Example</title>
+  <script type="text/javascript">
+
+    const handleCode = () => {
+      const code = document.getElementById("sixDigitCode");
+
+      sendMessage('code', code.value);
+
+      const codePanel = document.getElementById("codePanel");
+      codePanel.style.display = "none";
+
+      const sessionPanel = document.getElementById("sessionPanel");
+      sessionPanel.style.display = "block"
+    }
+
+    const endSession = () => {
+      sendMessage('session', 'end')
+
+      // reset the code value
+      const code = document.getElementById("sixDigitCode");
+      code.value = '';
+
+      const codePanel = document.getElementById("codePanel");
+      codePanel.style.display = "block";
+
+      const sessionPanel = document.getElementById("sessionPanel");
+      sessionPanel.style.display = "none"
+    }
+
+    const sendMessage = (type, message) => {
+      const ids = ['iframe-1', 'iframe-2']
+
+      for (const id of ids) {
+        const iframe = document.getElementById(id)
+        iframe.contentWindow.postMessage({ type, message }, "*");
+      }
+    }
+  </script>
+
+  <style>
+    /* styles.css */
+    body {
+      font-family: Arial, sans-serif;
+      color: #333
+    }
+
+
+    /* Container */
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #F4F6F8;
+    }
+
+    /* Flex container */
+    .flex-container {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+    }
+
+    /* Flex item */
+    .flex-item {
+      flex: 1;
+      background-color: #F7F9FA;
+    }
+
+    /* Header */
+    .header {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background-color: #EFF2F3;
+      padding: 1rem;
+    }
+
+    /* Sidebar content */
+    .sidebar-content {
+      width: 16rem;
+    }
+
+    /* Session */
+    .session {
+      height: 5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* End session button */
+    .end-session-button {
+      background-color: #FF7675;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #FFFFFF;
+    }
+
+    /* Code */
+    .code {
+      justify-items: center;
+      margin-bottom: 2rem;
+    }
+
+    /* Code label */
+    .code-label {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Code input */
+    .code-input {
+      border: 1px solid #BDC3C7;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+    }
+
+    /* Start session button */
+    .start-session-button {
+      background-color: #4AA0E6;
+      color: #FFFFFF;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    /* Charts */
+    .charts {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .charts iframe {
+      height: 250px;
+    }
+
+    /* Chart */
+    .chart {
+      aspect-ratio: 1/1;
+      background-color: #80C6E0;
+    }
+
+    /* Footer */
+    .footer {
+      columns: 2;
+      justify-content: space-between;
+      padding: 1rem;
+      background-color: #4D92B7;
+      color: #FFFFFF;
+    }
+
+    /* Footer column */
+    .footer-column {
+      text-align: center;
+    }
+
+    /* Link list */
+    .link-list {
+      list-style: none;
+      padding: 0;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="flex-container">
+      <div class="flex-item">
+        <h1 class="header">Cobrowse.io Agent Present Mode Iframes Example</h1>
+      </div>
+      <div id="sidebar" class="sidebar">
+        <div class="sidebar-content">
+          <div class="session" id="sessionPanel" style="display: none;">
+            <a onclick="endSession()" class="end-session-button">End session</a>
+          </div>
+          <div class="code" id="codePanel">
+            <span class="code-label">Present code</span>
+            <input type="text" id="sixDigitCode" class="code-input" value="">
+            <button id="submitButton" type="button" onclick="handleCode()" class="start-session-button">Start
+              Session</button>
+          </div>
+        </div>
+        <div id="charts" class="charts">
+          <iframe id="iframe-1" src="embedded-page.html?id=1">
+          </iframe>
+          <iframe id="iframe-2" src="embedded-page.html?id=2">
+          </iframe>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-column">
+        Useful links
+        <ul class="link-list">
+          <li>Link 1</li>
+          <li>Link 2</li>
+          <li>Link 3</li>
+          <li>Link 4</li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        Some more links
+        <ul class="link-list">
+          <li>Link 1</li>
+          <li>Link 2</li>
+          <li>Link 3</li>
+          <li>Link 4</li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+</body>
+
+
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Agent Present Mode Redaction Example</title>
+    <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const header = document.getElementById('header');
+
+            // set header
+            header.innerHTML = header.innerHTML + ' ' + id;
+
+            // set css class
+            document.body.classList.add(id === '1' ? 'orange' : 'orchid');
+        });
+
+        const startAgentPresentMode = (code) => {
+            CobrowseIO.getSession(code);
+        }
+
+        const handleSession = async (action) => {
+            if (action === 'end') {
+                if (CobrowseIO.currentSession) {
+                    await CobrowseIO.currentSession.end();
+                }
+            }
+        }
+
+        // this handler is use to receive postMessages from the parent page
+        const handler = (event) => {
+            const type = event.data.type
+            const message = event.data.message
+
+            if (type && message) {
+                switch (type) {
+                    case 'code':
+                        startAgentPresentMode(message)
+                        break
+                    case 'session':
+                        handleSession(message)
+                        break
+                }
+            }
+        }
+
+        window.addEventListener('message', handler);
+    </script>
+    <script type="text/javascript">
+        // Init Cobrowse SDK
+        (function(w,t,c,p,s,e){p=new Promise(function(r){w[c]={client:function(){if(!s){
+        s=document.createElement(t);s.src='https://js.cobrowse.io/CobrowseIO.js';s.async=1;
+        e=document.getElementsByTagName(t)[0];e.parentNode.insertBefore(s,e);s.onload=function()
+        {r(w[c]);};}return p;}};});})(window,'script','CobrowseIO');
+
+        (async () => {
+            // take the license key from the parent page query parameters
+            const parentUrlParams = new URLSearchParams(window.parent.location.search);
+
+            // FOR SECURITY REASONS DO NOT SET YOUR LICENSE KEY OR API USING QUERY PARAMETERS IN YOUR OWN APPLICATION
+            CobrowseIO.license = parentUrlParams.get('license') || 'trial'; // change to your license key
+            CobrowseIO.api = parentUrlParams.get('api') || 'https://api.cobrowse.io';
+
+            // Disable capabilities so that the end user is not able to enable remote control or full device mode
+            CobrowseIO.capabilities = []
+
+            // dismiss the consent prompt and session controls when in Present Mode in an Iframe
+            CobrowseIO.confirmSession = async () => true
+            CobrowseIO.showSessionControls = () => {}
+            CobrowseIO.hideSessionControls = () => {}
+
+            await CobrowseIO.client();
+            await CobrowseIO.start({ allowIFrameStart: true });
+        })();
+    </script>
+    <style>
+        .orange {
+            background-color: orchid;
+        }
+
+        .orchid {
+            background-color: orange;
+        }
+    </style>
+</head>
+
+<body style="font-family: Arial, sans-serif; color: #333">
+    <h2 id="header">IFrame</h1>
+</body>
+
+</html>

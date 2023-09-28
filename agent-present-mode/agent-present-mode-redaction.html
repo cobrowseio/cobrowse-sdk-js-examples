@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Agent Present Mode Redaction Example</title>
+  <script type="text/javascript">
+    (function(w,t,c,p,s,e){p=new Promise(function(r){w[c]={client:function(){if(!s){
+    s=document.createElement(t);s.src='https://js.cobrowse.io/CobrowseIO.js';s.async=1;
+    e=document.getElementsByTagName(t)[0];e.parentNode.insertBefore(s,e);s.onload=function()
+    {r(w[c]);};}return p;}};});})(window,'script','CobrowseIO');
+
+    (async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // FOR SECURITY REASONS DO NOT SET YOUR LICENSE KEY OR API USING QUERY PARAMETERS IN YOUR OWN APPLICATION
+      CobrowseIO.license = urlParams.get('license') || 'trial'; // change to your license key
+      CobrowseIO.api = urlParams.get('api') || 'https://api.cobrowse.io';
+
+      // Use redaction to restrict what the end user can see
+      CobrowseIO.redactedViews = [ "footer", "#chart-2" ]
+
+      // Disable capabilities so that the end user is not able to enable remote control or full device mode
+      CobrowseIO.capabilities = []
+      await CobrowseIO.client();
+
+      CobrowseIO.showSessionControls = () => {
+        const codePanel = document.getElementById("codePanel");
+        codePanel.style.display = "none";
+
+        const sessionPanel = document.getElementById("sessionPanel");
+        sessionPanel.style.display = "block"
+      }
+
+      await CobrowseIO.start();
+    })();
+
+    const startAgentPresentMode = async () => {
+      const code = document.getElementById("sixDigitCode");
+      try {
+        await CobrowseIO.getSession(code.value);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const stopAgentPresentMode = async () => {
+      if (CobrowseIO.currentSession)
+        await CobrowseIO.currentSession.end();
+
+      // reset the code value
+      const code = document.getElementById("sixDigitCode");
+      code.value = '';
+
+      const codePanel = document.getElementById("codePanel");
+      codePanel.style.display = "block";
+
+      const sessionPanel = document.getElementById("sessionPanel");
+      sessionPanel.style.display = "none"
+    }
+  </script>
+  <style>
+    /* styles.css */
+    body {
+      font-family: Arial, sans-serif;
+      color: #333
+    }
+
+
+    /* Container */
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #F4F6F8;
+    }
+
+    /* Flex container */
+    .flex-container {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+    }
+
+    /* Flex item */
+    .flex-item {
+      flex: 1;
+      background-color: #F7F9FA;
+    }
+
+    /* Header */
+    .header {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background-color: #EFF2F3;
+      padding: 1rem;
+    }
+
+    /* Sidebar content */
+    .sidebar-content {
+      width: 16rem;
+    }
+
+    /* Session */
+    .session {
+      height: 5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* End session button */
+    .end-session-button {
+      background-color: #FF7675;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #FFFFFF;
+    }
+
+    /* Code */
+    .code {
+      justify-items: center;
+      margin-bottom: 2rem;
+    }
+
+    /* Code label */
+    .code-label {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Code input */
+    .code-input {
+      border: 1px solid #BDC3C7;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+    }
+
+    /* Start session button */
+    .start-session-button {
+      background-color: #4AA0E6;
+      color: #FFFFFF;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    /* Charts */
+    .charts {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .charts iframe {
+      height: 250px;
+    }
+
+    /* Chart */
+    .chart {
+      aspect-ratio: 1/1;
+      background-color: #80C6E0;
+    }
+
+    /* Footer */
+    .footer {
+      columns: 2;
+      justify-content: space-between;
+      padding: 1rem;
+      background-color: #4D92B7;
+      color: #FFFFFF;
+    }
+
+    /* Footer column */
+    .footer-column {
+      text-align: center;
+    }
+
+    /* Link list */
+    .link-list {
+      list-style: none;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="flex-container">
+      <div class="flex-item">
+        <h1 class="header">Cobrowse.io Agent Present Mode Redaction Example</h1>
+      </div>
+      <div id="sidebar" class="sidebar">
+        <div class="sidebar-content">
+          <div class="session" id="sessionPanel" style="display: none;">
+            <a onclick="stopAgentPresentMode()" class="end-session-button">End session</a>
+          </div>
+          <div class="code" id="codePanel">
+            <span class="code-label">Present code</span>
+            <input type="text" id="sixDigitCode" class="code-input" value="">
+            <button id="submitButton" type="button" onclick="startAgentPresentMode()" class="start-session-button">Start
+              Session</button>
+          </div>
+        </div>
+        <div id="charts" class="charts">
+          <div id="chart-1" class="chart" style="aspect-ratio: 1/1;"></div>
+          <div id="chart-2" class="chart" style="aspect-ratio: 1/1;"></div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-column">
+        Useful links
+        <ul class="link-list">
+          <li>Link 1</li>
+          <li>Link 2</li>
+          <li>Link 3</li>
+          <li>Link 4</li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        Some more links
+        <ul class="link-list">
+          <li>Link 1</li>
+          <li>Link 2</li>
+          <li>Link 3</li>
+          <li>Link 4</li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+</body>
+
+</html>

@@ -105,3 +105,50 @@ Documentation at [https://docs.cobrowse.io/sdk-features/listening-for-events](ht
 4. Disrupt the connection by disconnecting the Internet connection for either the client, agent or both.
 6. Wait 9 - 10 seconds and see the status indicator and agent have been told the connection has been lost.
 7. Enable the Internet connection and see the session restore and the status update to active.
+
+## Agent Present Mode - 6-digit code
+
+Demo page at [https://cobrowse-sdk-js-examples.cbrws.io/agent-present-mode/agent-present-mode-ui.html](https://cobrowse-sdk-js-examples.cbrws.io/agent-present-mode/agent-present-mode-ui.html)
+
+Documentation at [https://support.cobrowse.io/agent-present-mode](https://support.cobrowse.io/agent-present-mode)
+
+
+1. Clone the repo and open agent-present-mode/agent-present-mode-ui.html in your browser.
+2. Replace CobrowseIO.license with your license key (register a new account at [https://cobrowse.io/register](https://cobrowse.io/register)).
+3. Ensure you have Agent Present Mode enabled in Settings, [https://cobrowse.io/dashboard/settings](https://cobrowse.io/dashboard/settings), Settings > Session Settings > Present Mode.
+4. Click "Share a different device" on the agent present mode page in [https://cobrowse.io/dashboard/present](https://cobrowse.io/dashboard/present) and copy the 6-digit present code.
+6. Input the 6-digit present code in the demo page.
+7. Share the session link from the agent present mode page with the user. For demonstration this can be opened in an anonymous window.
+
+
+## Agent Present Mode - Redaction
+
+Demo page at [https://cobrowse-sdk-js-examples.cbrws.io/agent-present-mode/agent-present-mode-redaction.html](https://cobrowse-sdk-js-examples.cbrws.io/agent-present-mode/agent-present-mode-redaction.html)
+
+Documentation at [https://support.cobrowse.io/agent-present-mode](https://support.cobrowse.io/agent-present-mode)
+
+
+1. Clone the repo and open agent-present-mode/agent-present-mode-ui.html in your browser.
+2. Replace CobrowseIO.license with your license key (register a new account at [https://cobrowse.io/register](https://cobrowse.io/register)).
+3. Ensure you have Agent Present Mode enabled in Settings, [https://cobrowse.io/dashboard/settings](https://cobrowse.io/dashboard/settings), Settings > Session Settings > Present Mode.
+4. Click "Share a different device" on the agent present mode page in [https://cobrowse.io/dashboard/present](https://cobrowse.io/dashboard/present) and copy the 6-digit present code.
+6. Input the 6-digit present code in the demo page.
+7. Share the session link from the agent present mode page with the user. For demonstration this can be opened in an anonymous window.
+8. From the end-user point of view observe that the footer and a side panel appear redacted.
+
+
+## Agent Present Mode - IFrame sharing
+
+Demo page at [https://cobrowse-sdk-js-examples.cbrws.io/agent-present-mode/agent-present-mode-iframes.html](https://cobrowse-sdk-js-examples.cbrws.io/agent-present-mode/agent-present-mode-iframes.html)
+
+Documentation at [https://support.cobrowse.io/agent-present-mode](https://support.cobrowse.io/agent-present-mode)
+
+This demo requires a local web server like VSCode Live Server, node http.server or Python SimpleHTTPServer (http.server for Puython 3).
+
+1. Clone the repo, launch your local web server and access the page agent-present-mode/agent-present-mode-ui.html in your browser.
+2. Replace CobrowseIO.license with your license key (register a new account at [https://cobrowse.io/register](https://cobrowse.io/register)).
+3. Ensure you have Agent Present Mode enabled in Settings, [https://cobrowse.io/dashboard/settings](https://cobrowse.io/dashboard/settings), Settings > Session Settings > Present Mode.
+4. Click "Share a different device" on the agent present mode page in [https://cobrowse.io/dashboard/present](https://cobrowse.io/dashboard/present) and copy the 6-digit present code.
+6. Input the 6-digit present code in the demo page.
+7. Share the session link from the agent present mode page with the user. For demonstration this can be opened in an anonymous window.
+8. On the agent side hover over the different IFrames. Observe how only the active IFrame will be shared with the end-user.
