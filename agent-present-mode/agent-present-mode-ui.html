@@ -66,11 +66,8 @@
     }
 
     const showAgentPresentModeModal = () => {
-      // ensure Cobrowse is loaded
-      CobrowseIO.client().then(() => {
-        // show the modal for the agent to input the 6 digit code
-        Alert().show('Agent Present Mode');
-      });
+      // show the modal for the agent to input the 6 digit code
+      Alert().show('Agent Present Mode');
     }
   </script>
 </head>
