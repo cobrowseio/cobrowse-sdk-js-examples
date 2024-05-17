@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#555555" />
+    <meta
+      name="description"
+      content="Cobrowse web demo app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- Web font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Icon font-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+      }
+    </style>
+    <!-- Salesforce -->
+    <style>
+      .embeddedServiceHelpButton .helpButton .uiButton {
+        background-color: #005290;
+        font-family: "Arial", sans-serif;
+      }
+      .embeddedServiceHelpButton .helpButton .uiButton:focus {
+        outline: 1px solid #005290;
+      }
+    </style>
+    <!-- Genesys -->
+    <style>
+      .genesys-start-chat-button {
+        background-color: #005290;
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        font-family: "Roboto", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        height: 36px;
+        line-height: 36px;
+        padding: 0 16px;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        white-space: nowrap;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+      }
+    </style>
+    <title>Cobrowse demo</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script>
+      // Loading integrations here as some cause issues when loaded from the React app
+      const params = new URLSearchParams(window.location.search)
+      const integration = params.get('integration')
+
+      console.log(`Loading ${integration}...`)
+
+      if (integration === 'zendesk') {
+        const script = document.createElement('script')
+
+        script.src = 'https://static.zdassets.com/ekr/snippet.js?key=12316f1c-f45a-47c3-86c4-c4dad7772d6f'
+        script.id = 'ze-snippet'
+
+        document.body.appendChild(script)
+      } else if (integration === 'freshdesk') {
+        window.fwSettings = {
+          'widget_id': 44000000174
+        };
+
+        (function () {
+          if ('function' != typeof window.FreshworksWidget) {
+            const n = function () {n.q.push(arguments)};
+            n.q = []
+            window.FreshworksWidget = n
+          }
+        })()
+
+        const script = document.createElement('script')
+
+        script.src = 'https://widget.freshworks.com/widgets/44000000174.js'
+        script.async = true
+
+        document.body.appendChild(script)
+      } else if (integration === 'intercom') {
+        window.intercomSettings = {
+          app_id: "g7s11eec",
+          name: "Joe Blogs", // Full name
+          email: "demo@example.com", // Email address
+          created_at: Date.now() // Signup date as a Unix timestamp
+        };
+        (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/g7s11eec';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+      } else if (integration === 'salesforce') {
+        const initESW = function(gslbBaseURL) {
+          embedded_svc.settings.displayHelpButton = true //Or false
+          embedded_svc.settings.language = '' //For example, enter 'en' or 'en-US'
+
+          embedded_svc.settings.enabledFeatures = ['LiveAgent']
+          embedded_svc.settings.entryFeature = 'LiveAgent'
+
+          embedded_svc.init(
+            'https://cobrowse-demo-2-dev-ed.my.salesforce.com',
+            'https://cobrowse-demo-2-dev-ed.my.salesforce-sites.com/liveAgentSetupFlow',
+            gslbBaseURL,
+            '00D8Z000000btHh',
+            'Group1',
+            {
+              baseLiveAgentContentURL: 'https://c.la5-c2-ia5.salesforceliveagent.com/content',
+              deploymentId: '5728Z000000XiPh',
+              buttonId: '5738Z000000XiRi',
+              baseLiveAgentURL: 'https://d.la5-c2-ia5.salesforceliveagent.com/chat',
+              eswLiveAgentDevName: 'Group1',
+              isOfflineSupportEnabled: true
+            }
+          )
+        }
+
+        if (!window.embedded_svc) {
+          const s = document.createElement('script')
+          s.setAttribute('src', 'https://cobrowse-demo-2-dev-ed.my.salesforce.com/embeddedservice/5.0/esw.min.js')
+          s.onload = function() {
+            initESW(null)
+          };
+          document.body.appendChild(s)
+        } else {
+          initESW('https://service.force.com')
+        }
+      } else if (integration === 'genesys') {
+        // Load this script programatically
+        const script = document.createElement('script')
+
+        script.src = 'https://apps.mypurecloud.com/widgets/9.0/cxbus.min.js'
+        script.onload = function() {
+          CXBus.configure({debug:false,pluginsPath:'https://apps.mypurecloud.com/widgets/9.0/plugins/'})
+          CXBus.loadPlugin('widgets-core')
+
+          loadGenesys()
+        }
+
+        document.body.appendChild(script)
+
+        function loadGenesys () {
+          const customPlugin = CXBus.registerPlugin('Custom')
+
+          customPlugin.subscribe('WebChatService.started', function (e) {
+            console.log('Chat started', e)
+          });
+
+          customPlugin.subscribe('WebChatService.ended', function (e) {
+            console.log('Chat ended', e)
+          })
+
+          const button = document.createElement('button')
+
+          button.className = 'genesys-start-chat-button'
+          button.innerHTML = 'Open Genesys chat'
+          button.onclick = function () {
+            customPlugin.command('WebChat.open', getAdvancedConfig())
+          }
+
+          document.body.appendChild(button)
+        }
+
+        window._genesys = {
+          widgets: {
+            webchat: {
+              transport: {
+                type: 'purecloud-v2-sockets',
+                dataURL: 'https://api.mypurecloud.com',
+                deploymentKey: '3e11459a-fc48-4069-b2d0-4ded766aa02a',
+                orgGuid: 'a2b2f1eb-3a46-4622-870f-2d7cdabc3cde',
+                interactionData: {
+                  routing: {
+                    targetType: 'QUEUE',
+                    targetAddress: 'TestQueue1',
+                    priority: 2
+                  }
+                }
+              },
+              emojis: true,
+              actionsMenu: true,
+              uploadsEnabled: true,
+              userData: {
+                addressStreet: '120 Kisevu Point',
+                addressCity: 'Sevjecof',
+                addressPostalCode: '50519',
+                addressState: 'ND',
+                phoneNumber: '(228) 878-9272',
+                customField1Label: '',
+                customField1: '',
+                customField2Label: '',
+                customField2: '',
+                cobrowseDeviceId2Label: '123',
+                cobrowseDeviceId2: '456'
+              }
+            }
+          }
+        }
+
+        function getAdvancedConfig() {
+          return {
+            form: {
+              autoSubmit: false,
+              firstname: 'Daisy',
+              lastname: ''
+            },
+            formJSON: {
+              wrapper: '<table></table>',
+              inputs: [
+                {
+                  id: 'cx_webchat_form_firstname',
+                  name: 'firstname',
+                  maxlength: '100',
+                  placeholder: 'Required',
+                  label: 'First Name'
+                },
+                {
+                  id: 'cx_webchat_form_lastname',
+                  name: 'lastname',
+                  maxlength: '100',
+                  placeholder: 'Required',
+                  label: 'Last Name'
+                },
+                {
+                  id: 'cx_webchat_form_email',
+                  name: 'email',
+                  maxlength: '100',
+                  placeholder: 'Optional',
+                  label: 'Email'
+                },
+                {
+                  id: 'cx_webchat_form_subject',
+                  name: 'subject',
+                  maxlength: '100',
+
+                  placeholder: 'Optional',
+                  label: 'Subject'
+                }
+              ]
+            }
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

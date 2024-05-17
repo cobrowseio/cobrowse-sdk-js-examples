@@ -1,0 +1,21 @@
+.balance {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--container-spacing);
+
+  .heading, .amount {
+    margin: 0;
+  }
+
+  .heading {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .amount {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-primary);
+  }
+}

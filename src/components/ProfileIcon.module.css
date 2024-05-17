@@ -1,0 +1,29 @@
+:root {
+  --profile-icon-size: 40px;
+}
+
+.icon {
+  border-radius: 50%;
+  background: #ffffff;
+  color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: var(--profile-icon-size);
+  width: var(--profile-icon-size);
+
+  &.small {
+    --profile-icon-size: 40px;
+    --icon-size: 1.5rem;
+  }
+
+  &.large {
+    --profile-icon-size: 80px;
+    --icon-size: 3rem;
+  }
+
+  &.invert {
+    background: var(--color-primary);
+    color: #ffffff;
+  }
+}

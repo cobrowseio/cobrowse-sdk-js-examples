@@ -1,0 +1,17 @@
+.code {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  font-size: var(--font-size-xxl);
+  font-weight: var(--font-weight-medium);
+  font-family: monospace;
+
+  /* This will ignore the separator when the code is selected and copied to the clipboard */
+  .separator {
+    display: contents;
+
+    &:after {
+      content: '-';
+    }
+  }
+}

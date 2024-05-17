@@ -1,0 +1,17 @@
+.present {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .presenting {
+        text-align: center;
+        --icon-size: 200px;
+        --icon-color: var(--color-primary);
+        --icon-weight: 300;
+
+        p {
+            font-size: var(--font-size-lg);
+        }
+    }
+}

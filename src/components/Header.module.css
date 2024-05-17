@@ -1,0 +1,25 @@
+:root {
+  --header-height: 60px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--container-spacing);
+  background: var(--color-primary);
+  color: #ffffff;
+  height: var(--header-height);
+}
+
+.title {
+  h1 {
+    font-size: var(--font-size-xl);
+    margin: 0;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}

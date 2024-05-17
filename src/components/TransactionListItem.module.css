@@ -1,0 +1,49 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--container-spacing);
+  border-bottom: 1px solid var(--color-borders);
+  --color-link: var(--color-text);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: var(--color-accent);
+  }
+}
+
+.details {
+  display: flex;
+  gap: 10px;
+
+  .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    --icon-size: 2.5rem;
+  }
+
+  .description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+
+    .title {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-medium);
+    }
+
+    .date {
+      font-size: var(--font-size-sm);
+    }
+  }
+}
+
+.amount {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+}

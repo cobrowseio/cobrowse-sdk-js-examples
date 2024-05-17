@@ -1,0 +1,5 @@
+.button {
+  --icon-size: 2.3rem;
+  display: flex;
+  align-items: center;
+}

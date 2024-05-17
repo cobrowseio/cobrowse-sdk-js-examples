@@ -1,0 +1,15 @@
+.sidebar {
+  background: #ffffff;
+  border-top: 1px solid var(--color-borders);
+  min-height: 265px;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
+
+  @media screen and (min-width: 740px) {
+    border-radius: 0;
+    box-shadow: none;
+    border-right: 1px solid var(--color-borders);
+    position: sticky;
+    order: -9999;
+    min-width: 400px;
+  }
+}

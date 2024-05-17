@@ -1,0 +1,8 @@
+.linkButton {
+  composes: button from './Button.module.css';
+  text-decoration: none;
+
+  &.secondary {
+    composes: secondary from './Button.module.css';
+  }
+}
