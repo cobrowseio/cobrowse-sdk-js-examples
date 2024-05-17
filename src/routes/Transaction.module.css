@@ -1,5 +1,0 @@
-.transaction {
-  /* Subtract the default container spacing because the embedded page already contains some padding */
-  margin: calc(var(--container-spacing) * -1);
-  height: 100%;
-}
