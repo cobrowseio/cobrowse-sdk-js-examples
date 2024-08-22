@@ -95,7 +95,7 @@ const App = () => {
       customSessionControls: getQueryParam('custom_session_controls'),
       allowHeadless: getQueryParam('allow_headless'),
       sessionCode: getQueryParam('session_code'),
-      deviceRegistrationEnabled: getQueryParam('device_registration_enabled')
+      registration: getQueryParam('registration')
     })
   }, [start])
 

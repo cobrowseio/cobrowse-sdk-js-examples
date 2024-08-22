@@ -39,7 +39,7 @@ export const useCobrowse = () => {
     }
   }, [CobrowseIO])
 
-  const start = useCallback(({ api, license, redactedViews, customData, capabilities, sessionCode, allowHeadless = false, customSessionControls = false, deviceRegistrationEnabled = true } = {}) => {
+  const start = useCallback(({ api, license, redactedViews, customData, capabilities, sessionCode, allowHeadless = false, customSessionControls = false, registration = true } = {}) => {
     if (!CobrowseIO || cobrowseStarted.current) {
       return
     }
@@ -55,7 +55,7 @@ export const useCobrowse = () => {
     CobrowseIO.license = license || 'trial'
     CobrowseIO.redactedViews = redactedViews || ['.redacted', '#title', '#amount', '#subtitle', '#map']
     CobrowseIO.customData = customData || {}
-    CobrowseIO.registration = deviceRegistrationEnabled
+    CobrowseIO.registration = registration
 
     if (customSessionControls) {
       CobrowseIO.showSessionControls = () => true
