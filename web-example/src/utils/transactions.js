@@ -25,7 +25,11 @@ const generateTransactions = (numberOfTransactions) => {
 
 const generateTransaction = (categoryKey, startDate, endDate) => {
   const category = categories[categoryKey]
-  const title = category.titles[Math.floor(Math.random() * category.titles.length)]
+  const business = category.businesses[Math.floor(Math.random() * category.businesses.length)]
+  const title = business.name
+  const contactUrl = business.url
+  const lat = business.lat
+  const lng = business.lng
   const [min, max] = category.amountRange
   const amount = (Math.floor(Math.random() * (max - min)) + min) / 100
   const hours = Math.floor(Math.random() * 24)
@@ -40,6 +44,9 @@ const generateTransaction = (categoryKey, startDate, endDate) => {
     category: categoryKey,
     categoryLabel: category.label,
     title,
+    contactUrl,
+    lat,
+    lng,
     amount,
     formattedAmount: formatAmount(amount),
     date,

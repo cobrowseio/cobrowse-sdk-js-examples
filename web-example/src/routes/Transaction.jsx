@@ -1,6 +1,6 @@
-import ExternalTransactionView from '../components/ExternalTransactionView'
 import { getTransaction } from '../utils/transactions'
 import { useLoaderData } from 'react-router-dom'
+import TransactionDetails from '../components/TransactionDetails'
 import styles from './Transaction.module.css'
 
 export const loader = async ({ params }) => {
@@ -14,12 +14,7 @@ const Transaction = () => {
 
   return (
     <div className={styles.transaction}>
-      <ExternalTransactionView
-        title={transaction.title}
-        date={transaction.formattedDate}
-        amount={transaction.formattedAmount}
-        category={transaction.category}
-      />
+      <TransactionDetails transaction={transaction} />
     </div>
   )
 }

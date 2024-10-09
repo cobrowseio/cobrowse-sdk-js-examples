@@ -1,0 +1,55 @@
+.receipt {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+}
+
+.amount {
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.category {
+  --icon-size: 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.map {
+  width: 100%;
+  padding: 1rem;
+  height: 24rem;
+  margin-bottom: 1rem;
+}
+
+.actionContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+

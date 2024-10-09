@@ -22,6 +22,14 @@
       color: var(--color-primary);
       text-decoration: none;
     }
+
+    .accountSummaryPdf {
+      margin-top: 1rem;
+
+      a {
+        text-decoration: none;
+      }
+    }
   }
 
   .actions {

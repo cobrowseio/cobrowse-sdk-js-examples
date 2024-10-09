@@ -5,6 +5,7 @@ import { AuthProvider } from './hooks/useAuth'
 import { useCobrowse } from './hooks/useCobrowse'
 import Dashboard, { loader as dashboardLoader } from './routes/Dashboard'
 import DashboardLayout, { loader as dashboardLayoutLoader } from './routes/layouts/DashboardLayout'
+import Fraud from './routes/Fraud'
 import Login from './routes/Login'
 import Present from './routes/Present'
 import Profile from './routes/Profile'
@@ -44,6 +45,12 @@ const router = createBrowserRouter([
               <Transaction />
             ),
             loader: transactionLoader
+          },
+          {
+            path: 'fraud',
+            element: (
+              <Fraud />
+            )
           }
         ]
       },

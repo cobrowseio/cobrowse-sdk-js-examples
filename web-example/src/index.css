@@ -78,9 +78,6 @@ code {
 }
 
 #root {
-  /*position: fixed;*/
-  /*inset: 0;*/
-  /*overflow: hidden;*/
   flex: 1 1;
   min-height: 0;
 }

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { categories } from '../data/categories'
 
 export const useCobrowse = () => {
   const [CobrowseIO, setCobrowseIO] = useState()
@@ -14,6 +15,12 @@ export const useCobrowse = () => {
 
     onCobrowseLoaded()
   }, [])
+
+  useEffect(() => {
+    if (CobrowseIO?.currentSession) {
+      setCobrowsing(CobrowseIO.currentSession.isActive())
+    }
+  }, [CobrowseIO?.currentSession])
 
   useEffect(() => {
     // Wait until CobrowseIO is loaded
@@ -54,8 +61,17 @@ export const useCobrowse = () => {
 
     CobrowseIO.license = license || 'trial'
     CobrowseIO.redactedViews = redactedViews || ['.redacted', '#title', '#amount', '#subtitle', '#map']
-    CobrowseIO.customData = customData || {}
+    CobrowseIO.customData = {
+      device_name: 'Trial Website',
+      user_email: 'web@example.com',
+      ...customData
+    }
     CobrowseIO.registration = (registration !== false)
+    CobrowseIO.pdfLinks = ['*.pdf']
+    CobrowseIO.universalLinks = Object.values(categories)
+      .flatMap(category => category.businesses)
+      .filter(business => business.url)
+      .map(business => new URL(business.url).origin + '/*')
 
     if (customSessionControls) {
       CobrowseIO.showSessionControls = () => true

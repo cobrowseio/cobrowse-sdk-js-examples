@@ -1,4 +1,5 @@
 import ProfileIcon from './ProfileIcon'
+import LinkButton from './LinkButton'
 import styles from './ProfileView.module.css'
 import Redacted from './Redacted'
 
@@ -18,6 +19,11 @@ const ProfileView = ({ actions }) => {
             <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
           </div>
         </Redacted>
+        <div className={styles.accountSummaryPdf}>
+          <LinkButton to='/account_summary.pdf' variant='secondary' target='_blank'>
+            View account summary
+          </LinkButton>
+        </div>
       </div>
       {actions && (
         <div className={styles.actions}>
