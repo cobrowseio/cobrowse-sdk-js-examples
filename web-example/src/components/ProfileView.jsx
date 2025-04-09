@@ -26,7 +26,7 @@ const ProfileView = ({ actions }) => {
         </div>
       </div>
       {actions && (
-        <div className={styles.actions}>
+        <div className={`${styles.actions} unredacted`}>
           {actions}
         </div>
       )}

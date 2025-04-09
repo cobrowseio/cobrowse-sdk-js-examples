@@ -47,7 +47,7 @@ export const useCobrowse = () => {
     }
   }, [CobrowseIO])
 
-  const start = useCallback(({ api, license, redactedViews, customData, capabilities, sessionCode, allowHeadless = false, customSessionControls = false, registration = true, integration } = {}) => {
+  const start = useCallback(({ api, license, redactedViews, unredactedViews, customData, capabilities, sessionCode, allowHeadless = false, customSessionControls = false, registration = true, integration } = {}) => {
     if (!CobrowseIO || cobrowseStarted.current) {
       return
     }
@@ -66,7 +66,18 @@ export const useCobrowse = () => {
 
     CobrowseIO.license = license ?? integrationLicense ?? 'trial'
 
-    CobrowseIO.redactedViews = redactedViews || ['.redacted', '#title', '#amount', '#subtitle', '#map']
+    CobrowseIO.redactedViews = Array.isArray(redactedViews) 
+      ? redactedViews 
+      : (typeof redactedViews === 'string' 
+        ? redactedViews.split(',').map(view => view.trim()) 
+        : ['.redacted', '#title', '#amount', '#subtitle', '#map'])
+
+    CobrowseIO.unredactedViews = Array.isArray(unredactedViews) 
+      ? unredactedViews 
+      : (typeof unredactedViews === 'string' 
+        ? unredactedViews.split(',').map(view => view.trim()) 
+        : ['.unredacted'])
+    
     CobrowseIO.customData = {
       device_name: 'Trial Website',
       user_email: 'web@example.com',
