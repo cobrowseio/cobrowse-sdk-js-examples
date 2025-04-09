@@ -91,7 +91,7 @@ const Chart = ({ categories, currentMonthTransactionsByCategory, currentMonthSpe
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.chart}>
+      <div className={`${styles.chart} unredacted`}>
         <canvas ref={chartRef}></canvas>
         <div className={styles.spent}>
           Spent

@@ -5,7 +5,7 @@ import styles from './ProfileIcon.module.css'
 
 const ProfileIcon = ({ size = 'small', invert = false }) => {
   return (
-    <div className={`${styles.icon} ${styles[size]} ${invert ? styles.invert : ''}`}>
+    <div className={`${styles.icon} ${styles[size]} ${invert ? styles.invert : ''} unredacted`}>
       <Icon name='person' />
     </div>
   )
