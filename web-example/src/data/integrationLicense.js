@@ -3,5 +3,6 @@ export const licenses = {
   zendesk: 'MECLNs3JUpHRGg',
   freshchat: 'GOz3faJSJQ3L9g',
   salesforce: 'IKIC3uqyhRJrYg',
-  nice: 'ORTrVWkunWytUA'
+  nice: 'ORTrVWkunWytUA',
+  five9: '_lNWvygfLTY0kA'
 }

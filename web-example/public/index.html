@@ -272,6 +272,31 @@
 
         cxone('init', '4845')
         cxone('guide', 'init')
+      } else if (integration === 'five9') {
+        const script = document.createElement('script')
+
+        script.src = 'https://cdn.prod.us.five9.net/static/stable/chat/wrapper/index.js'
+        script.onload = () => {
+          CobrowseIO.client().then(function(){
+            const deviceId = CobrowseIO.deviceId();
+
+            CobrowseIO.customData = {
+              cobrowse_device_id: deviceId
+            }
+
+            F9.Chat.Wrapper.init({
+              cdn: 'prod',
+              useBusinessHours: false,
+              languages: {"enabled":false,"backgroundColor":"#65758e"},
+              l10n: {"en":{"messenger":{"customText":{}},"systemMessages":{"transferredToParticipant":"The chat has been transferred to {name}.","transferredToGroup":"That chat has been transferred to group {group}."},"captureFields":[{"k":"name","l":"Name","p":"Enter your name..."},{"k":"email","l":"Email Address","p":"Enter your email..."},{"k":"Question","l":"Question","p":"What can we help you with today?"}]}},
+              prepopulatedFields: [{"k":"campaign","v":"Cobrowse chat"}, {"k":"Cobrowse.device_id","v":CobrowseIO.deviceId()}],
+              messenger: {"integrationId":"aecd93c1-ec34-4fbd-b731-906b74fc8417","soundNotificationEnabled":true,"transcriptPrintingEnabled":false,"menuItems":{"imageUpload":true,"fileUpload":true,"shareLocation":true},"embedded":false,"setViewportScale":false,"browserStorage":"sessionStorage","hideWidgetAfterBusinessHours":false,"scheduleCallback":{"isCallbackEnabled":false,"requestCallbackList":"","customConfirmationMessage":"We will call you as soon as we can at [PHONE]","web2CampaignAPIHost":""},"fixedHeader":false,"displayStyle":"button","customColors":{"brandColor":"65758e","conversationColor":"0099ff","actionColor":"0099ff"},"carouselType":"default"},
+              clearMessagesTimeout: 3
+            });
+          });
+        }
+
+        document.head.appendChild(script)
       }
     </script>
   </body>
