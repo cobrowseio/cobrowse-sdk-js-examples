@@ -98,6 +98,7 @@ const App = () => {
       license: getQueryParam('license'),
       redactedViews: getQueryParam('redacted_views'),
       unredactedViews: getQueryParam('unredacted_views'),
+      ignoredViews: getQueryParam('ignored_views'),
       capabilities: getQueryParam('capabilities'),
       customData: getQueryParam('custom_data'),
       customSessionControls: getQueryParam('custom_session_controls'),

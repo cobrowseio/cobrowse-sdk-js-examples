@@ -47,7 +47,7 @@ export const useCobrowse = () => {
     }
   }, [CobrowseIO])
 
-  const start = useCallback(({ api, license, redactedViews, unredactedViews, customData, capabilities, sessionCode, allowHeadless = false, customSessionControls = false, registration = true, integration } = {}) => {
+  const start = useCallback(({ api, license, redactedViews, unredactedViews, ignoredViews, customData, capabilities, sessionCode, allowHeadless = false, customSessionControls = false, registration = true, integration } = {}) => {
     if (!CobrowseIO || cobrowseStarted.current) {
       return
     }
@@ -65,18 +65,33 @@ export const useCobrowse = () => {
       : undefined
 
     CobrowseIO.license = license ?? integrationLicense ?? 'trial'
+    
+    CobrowseIO.redactedViews = [
+      ...(CobrowseIO.redactedViews || []),
+      ...(Array.isArray(redactedViews)
+      ? redactedViews
+      : (typeof redactedViews === 'string'
+      ? redactedViews.split(',').map(view => view.trim())
+      : ['.redacted', '#title', '#amount', '#subtitle', '#map']))
+    ]
 
-    CobrowseIO.redactedViews = Array.isArray(redactedViews) 
-      ? redactedViews 
-      : (typeof redactedViews === 'string' 
-        ? redactedViews.split(',').map(view => view.trim()) 
-        : ['.redacted', '#title', '#amount', '#subtitle', '#map'])
+    CobrowseIO.unredactedViews = [
+      ...(CobrowseIO.unredactedViews || []),
+      ...(Array.isArray(unredactedViews)
+      ? unredactedViews
+      : (typeof unredactedViews === 'string'
+      ? unredactedViews.split(',').map(view => view.trim())
+      : ['.unredacted']))
+    ]
 
-    CobrowseIO.unredactedViews = Array.isArray(unredactedViews) 
-      ? unredactedViews 
-      : (typeof unredactedViews === 'string' 
-        ? unredactedViews.split(',').map(view => view.trim()) 
-        : ['.unredacted'])
+    CobrowseIO.ignoredViews = [
+      ...(CobrowseIO.ignoredViews || []),
+      ...(Array.isArray(ignoredViews)
+      ? ignoredViews
+      : (typeof ignoredViews === 'string'
+      ? ignoredViews.split(',').map(view => view.trim())
+      : []))
+    ]
     
     CobrowseIO.customData = {
       device_name: 'Trial Website',
