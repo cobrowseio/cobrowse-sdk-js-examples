@@ -47,7 +47,7 @@ export const useCobrowse = () => {
     }
   }, [CobrowseIO])
 
-  const start = useCallback(({ api, license, redactedViews, unredactedViews, customData, capabilities, sessionCode, allowHeadless = false, customSessionControls = false, registration = true, integration } = {}) => {
+  const start = useCallback(({ api, license, redactedViews, unredactedViews, ignoredViews, customData, capabilities, sessionCode, allowHeadless = false, customSessionControls = false, registration = true, integration } = {}) => {
     if (!CobrowseIO || cobrowseStarted.current) {
       return
     }
@@ -65,18 +65,21 @@ export const useCobrowse = () => {
       : undefined
 
     CobrowseIO.license = license ?? integrationLicense ?? 'trial'
+    
+    const configureViews = (views, defaultViews) => {
+      return [
+      ...(views || []),
+      ...(Array.isArray(defaultViews)
+        ? defaultViews
+        : (typeof defaultViews === 'string'
+        ? defaultViews.split(',').map(view => view.trim())
+        : []))
+      ]
+    }
 
-    CobrowseIO.redactedViews = Array.isArray(redactedViews) 
-      ? redactedViews 
-      : (typeof redactedViews === 'string' 
-        ? redactedViews.split(',').map(view => view.trim()) 
-        : ['.redacted', '#title', '#amount', '#subtitle', '#map'])
-
-    CobrowseIO.unredactedViews = Array.isArray(unredactedViews) 
-      ? unredactedViews 
-      : (typeof unredactedViews === 'string' 
-        ? unredactedViews.split(',').map(view => view.trim()) 
-        : ['.unredacted'])
+    CobrowseIO.redactedViews = configureViews(CobrowseIO.redactedViews, redactedViews || ['.redacted', '#title', '#amount', '#subtitle', '#map'])
+    CobrowseIO.unredactedViews = configureViews(CobrowseIO.unredactedViews, unredactedViews || ['.unredacted'])
+    CobrowseIO.ignoredViews = configureViews(CobrowseIO.ignoredViews, ignoredViews || [])
     
     CobrowseIO.customData = {
       device_name: 'Trial Website',
