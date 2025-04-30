@@ -65,22 +65,20 @@ export const useCobrowse = () => {
       : undefined
 
     CobrowseIO.license = license ?? integrationLicense ?? 'trial'
-    
-    const configureViews = (views, defaultViews) => {
+
+    const mergeViews = (views, defaultViews) => {
       return [
-      ...(views || []),
-      ...(Array.isArray(defaultViews)
-        ? defaultViews
-        : (typeof defaultViews === 'string'
-        ? defaultViews.split(',').map(view => view.trim())
-        : []))
+        ...(views || []),
+        ...(defaultViews || [])
       ]
     }
 
-    CobrowseIO.redactedViews = configureViews(CobrowseIO.redactedViews, redactedViews || ['.redacted', '#title', '#amount', '#subtitle', '#map'])
-    CobrowseIO.unredactedViews = configureViews(CobrowseIO.unredactedViews, unredactedViews || ['.unredacted'])
-    CobrowseIO.ignoredViews = configureViews(CobrowseIO.ignoredViews, ignoredViews || [])
-    
+    CobrowseIO.redactedViews = mergeViews(CobrowseIO.redactedViews, redactedViews || ['.redacted', '#title', '#amount', '#subtitle', '#map'])
+    CobrowseIO.unredactedViews = mergeViews(CobrowseIO.unredactedViews, unredactedViews || ['.unredacted'])
+
+    let result = mergeViews(CobrowseIO.ignoredViews, ignoredViews || [])
+    CobrowseIO.ignoredViews = result.length > 0 ? result : undefined
+
     CobrowseIO.customData = {
       device_name: 'Trial Website',
       user_email: 'web@example.com',
