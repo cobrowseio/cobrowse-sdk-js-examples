@@ -75,7 +75,9 @@ export const useCobrowse = () => {
 
     CobrowseIO.redactedViews = mergeViews(CobrowseIO.redactedViews, redactedViews || ['.redacted', '#title', '#amount', '#subtitle', '#map'])
     CobrowseIO.unredactedViews = mergeViews(CobrowseIO.unredactedViews, unredactedViews || ['.unredacted'])
-    CobrowseIO.ignoredViews = mergeViews(CobrowseIO.ignoredViews, ignoredViews || [])
+
+    let result = mergeViews(CobrowseIO.ignoredViews, ignoredViews || [])
+    CobrowseIO.ignoredViews = result.length > 0 ? result : undefined
 
     CobrowseIO.customData = {
       device_name: 'Trial Website',
