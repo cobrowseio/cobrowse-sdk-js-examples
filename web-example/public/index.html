@@ -299,6 +299,16 @@
         }
 
         document.head.appendChild(script)
+      } else if (integration === 'dynamics') {
+        const script = document.createElement('script')
+        const params = new URLSearchParams(window.location.search);
+        script.src = 'https://oc-cdn-ocprod.azureedge.net/livechatwidget/scripts/LiveChatBootstrapper.js'
+        script.id = 'Microsoft_Omnichannel_LCWidget'
+        script.setAttribute('data-app-id', params.get('dynamics-app-id'))
+        script.setAttribute('data-org-id', params.get('dynamics-org-id'))
+        script.setAttribute('data-org-url', params.get('dynamics-org-url'))
+        script.setAttribute('data-lcw-version', 'prod')
+        document.body.appendChild(script)
       }
     </script>
   </body>
