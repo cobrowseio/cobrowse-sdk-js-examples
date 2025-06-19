@@ -300,6 +300,8 @@
 
         document.head.appendChild(script)
       } else if (integration === 'dynamics') {
+        CobrowseIO.ignoredViews = ['iframe[title="Chat Widget"]']
+
         const script = document.createElement('script')
         const params = new URLSearchParams(window.location.search);
         script.src = 'https://oc-cdn-ocprod.azureedge.net/livechatwidget/scripts/LiveChatBootstrapper.js'
