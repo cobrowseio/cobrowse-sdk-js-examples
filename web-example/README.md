@@ -25,3 +25,7 @@ Example URLs:
     - `dynamics-app-id`
     - `dynamics-org-id`
     - `dynamics-org-url`
+
+- ServiceNow [https://cobrowse-sdk-js-examples.cbrws.io/web-example/demo?integration=servicenow&service-now-url=https://dev305592.service-now.com&license=Xskn6AwiVgzBcQ&demo=true](https://cobrowse-sdk-js-examples.cbrws.io/web-example/demo?integration=servicenow&service-now-url=https://dev305592.service-now.com&license=Xskn6AwiVgzBcQ&demo=true)
+
+  The `service-now-url` parameter can be used to configure your own service now instance.
