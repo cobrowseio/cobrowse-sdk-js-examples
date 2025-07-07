@@ -303,13 +303,34 @@
         CobrowseIO.ignoredViews = ['iframe[title="Chat Widget"]']
 
         const script = document.createElement('script')
-        const params = new URLSearchParams(window.location.search);
         script.src = 'https://oc-cdn-ocprod.azureedge.net/livechatwidget/scripts/LiveChatBootstrapper.js'
         script.id = 'Microsoft_Omnichannel_LCWidget'
+        const params = new URLSearchParams(window.location.search);
         script.setAttribute('data-app-id', params.get('dynamics-app-id'))
         script.setAttribute('data-org-id', params.get('dynamics-org-id'))
         script.setAttribute('data-org-url', params.get('dynamics-org-url'))
         script.setAttribute('data-lcw-version', 'prod')
+        document.body.appendChild(script)
+      } else if (integration === 'servicenow') {
+        CobrowseIO.ignoredViews = ['now-requestor-chat-popover'];
+
+        const params = new URLSearchParams(window.location.search);
+        const snUrl = params.get('service-now-url') ?? "https://dev305592.service-now.com";
+        const script = document.createElement('script')
+        script.type = 'module'
+        script.src = `${snUrl}/uxasset/externals/now-requestor-chat-popover-app/index.jsdbx?sysparm_substitute=false`
+        script.onload = () => {
+          CobrowseIO.client().then(function() {
+            const deviceId = CobrowseIO.deviceId();
+            const chat = new ServiceNowChat({
+              instance: snUrl,
+              context: {
+                skip_load_history: 1,
+                cobrowse_device_id: deviceId
+              },
+            });
+          });
+        }
         document.body.appendChild(script)
       }
     </script>
