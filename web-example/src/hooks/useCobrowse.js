@@ -64,7 +64,7 @@ export const useCobrowse = () => {
       ? licenseForIntegration(integration)
       : undefined
 
-    CobrowseIO.license = license ?? integrationLicense ?? 'trial'
+    CobrowseIO.license = license ?? integrationLicense ?? 'DUqoujTcLftzew'
 
     const mergeViews = (views, defaultViews) => {
       return [

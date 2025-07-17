@@ -13,7 +13,7 @@ const Header = () => {
       </div>
       <div className={styles.actions}>
         <EndSessionButton />
-        <Link to={`/profile`}>
+        <Link to='/profile'>
           <ProfileIcon />
         </Link>
       </div>

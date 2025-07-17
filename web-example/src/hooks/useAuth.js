@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   const value = useMemo(() => ({
     user,
     login,
-    logout,
+    logout
   }), [user, login, logout])
 
   return (

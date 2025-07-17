@@ -14,7 +14,7 @@ const TransactionList = forwardRef(({ transactions }, ref) => {
             </div>
             <div>
               {transactions[month].map((transaction) => (
-                <TransactionListItem key={transaction.id} transaction={transaction}/>
+                <TransactionListItem key={transaction.id} transaction={transaction} />
               ))}
             </div>
           </div>

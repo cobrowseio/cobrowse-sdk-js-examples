@@ -17,7 +17,7 @@ const EndSessionButton = () => {
 
   return (
     <Button variant='plain' onClick={endSession} className={styles.button}>
-      <Icon name='cancel_presentation'/>
+      <Icon name='cancel_presentation' />
     </Button>
   )
 }

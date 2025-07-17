@@ -19,7 +19,7 @@ const Present = () => {
         {!cobrowsing && (
           <>
             <p>Please enter your present code</p>
-            <CodeEntry onCode={handleCode}/>
+            <CodeEntry onCode={handleCode} />
           </>
         )}
         {cobrowsing && (

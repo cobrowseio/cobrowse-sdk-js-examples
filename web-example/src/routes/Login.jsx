@@ -34,7 +34,7 @@ const Login = () => {
         <div className={styles.inputs}>
           <p>Please enter your details</p>
           <Redacted>
-            <Input type='text' placeholder='Email' autoComplete='email' onChange={(e) => setEmail(e.target.value)}/>
+            <Input type='text' placeholder='Email' autoComplete='email' onChange={(e) => setEmail(e.target.value)} />
           </Redacted>
           <Redacted>
             <Input
