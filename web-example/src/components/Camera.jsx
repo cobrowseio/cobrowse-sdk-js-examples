@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './Camera.module.css'
 import Button from './Button'
+import Select from './Select'
 
 export const Camera = ({ onCapture, onClose }) => {
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
   const [capturedImage, setCapturedImage] = useState(null)
   const [error, setError] = useState(null)
+  const [cameras, setCameras] = useState([])
+  const [selectedCameraId, setSelectedCameraId] = useState(null)
   const animationFrameRef = useRef(null)
   const streamRef = useRef(null)
 
@@ -19,15 +22,38 @@ export const Camera = ({ onCapture, onClose }) => {
   }, [capturedImage])
 
   useEffect(() => {
+    const getCameras = async () => {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices()
+        const videoDevices = devices.filter((device) => device.kind === 'videoinput')
+
+        setCameras(videoDevices)
+
+        if (videoDevices.length > 0 && !selectedCameraId) {
+          setSelectedCameraId(videoDevices[0].deviceId)
+        }
+      } catch (err) {
+        console.error('Error enumerating devices:', err)
+      }
+    }
+
+    getCameras()
+  }, [selectedCameraId])
+
+  useEffect(() => {
     let isMounted = true
 
     const startCamera = async () => {
       if (!isMounted) return
 
       try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'user' }
-        })
+        const constraints = {
+          video: {
+            deviceId: selectedCameraId ? { exact: selectedCameraId } : undefined,
+            facingMode: selectedCameraId ? undefined : 'user'
+          }
+        }
+        const mediaStream = await navigator.mediaDevices.getUserMedia(constraints)
 
         if (!isMounted) {
           mediaStream.getTracks().forEach(track => track.stop())
@@ -68,7 +94,7 @@ export const Camera = ({ onCapture, onClose }) => {
         window.cancelAnimationFrame(animationFrameRef.current)
       }
     }
-  }, [drawVideoFrame])
+  }, [drawVideoFrame, selectedCameraId])
 
   // Stop animation frame when image is captured
   useEffect(() => {
@@ -117,7 +143,6 @@ export const Camera = ({ onCapture, onClose }) => {
             ×
           </button>
         </div>
-
         <div className={styles.cameraContainer}>
           {error
             ? (
@@ -148,6 +173,23 @@ export const Camera = ({ onCapture, onClose }) => {
               </>
               )}
         </div>
+
+        {cameras.length > 1 && !capturedImage && (
+          <div className={styles.cameraSelector}>
+            <label htmlFor="camera-select">Camera:</label>
+            <Select
+              id="camera-select"
+              value={selectedCameraId || ''}
+              onChange={(e) => setSelectedCameraId(e.target.value)}
+            >
+              {cameras.map((camera) => (
+                <option key={camera.deviceId} value={camera.deviceId}>
+                  {camera.label || `Camera ${cameras.indexOf(camera) + 1}`}
+                </option>
+              ))}
+            </Select>
+          </div>
+        )}
 
         <div className={styles.controls}>
           {!capturedImage
