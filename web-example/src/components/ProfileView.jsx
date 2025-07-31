@@ -5,6 +5,7 @@ import styles from './ProfileView.module.css'
 import Redacted from './Redacted'
 import { Camera } from './Camera.jsx'
 import { useLocalStorage } from '../hooks/useLocalStorage.js'
+import { AddPhoto } from '../icons/icons.js'
 
 const NAME = 'Frank Spencer'
 const EMAIL = 'f.spencer@example.com'
@@ -37,6 +38,7 @@ const ProfileView = ({ actions }) => {
         size='large'
         invert
         onClick={handleProfileIconClick}
+        HoverIcon={AddPhoto}
       />
       {isUpdatingProfilePhoto
         ? (
