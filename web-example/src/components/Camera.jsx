@@ -1,26 +1,45 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './Camera.module.css'
 import Button from './Button'
 
 export const Camera = ({ onCapture, onClose }) => {
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
-  const [stream, setStream] = useState(null)
   const [capturedImage, setCapturedImage] = useState(null)
   const [error, setError] = useState(null)
   const animationFrameRef = useRef(null)
+  const streamRef = useRef(null)
+
+  const drawVideoFrame = useCallback(() => {
+    if (videoRef.current && canvasRef.current && !capturedImage) {
+      const context = canvasRef.current.getContext('2d')
+      context.drawImage(videoRef.current, 0, 0)
+      animationFrameRef.current = window.requestAnimationFrame(drawVideoFrame)
+    }
+  }, [capturedImage])
 
   useEffect(() => {
+    let isMounted = true
+
     const startCamera = async () => {
+      if (!isMounted) return
+
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: 'user' }
         })
-        setStream(mediaStream)
-        if (videoRef.current && canvasRef.current) {
+
+        if (!isMounted) {
+          mediaStream.getTracks().forEach(track => track.stop())
+          return
+        }
+
+        streamRef.current = mediaStream
+        if (videoRef.current && canvasRef.current && isMounted) {
           videoRef.current.srcObject = mediaStream
           // Wait for video metadata to load
           videoRef.current.addEventListener('loadedmetadata', () => {
+            if (!isMounted) return
             // Set canvas dimensions to match video
             canvasRef.current.width = videoRef.current.videoWidth
             canvasRef.current.height = videoRef.current.videoHeight
@@ -29,30 +48,27 @@ export const Camera = ({ onCapture, onClose }) => {
           })
         }
       } catch (err) {
-        setError('Unable to access camera. Please check permissions.')
-        console.error('Camera error:', err)
-      }
-    }
-
-    const drawVideoFrame = () => {
-      if (videoRef.current && canvasRef.current && !capturedImage) {
-        const context = canvasRef.current.getContext('2d')
-        context.drawImage(videoRef.current, 0, 0)
-        animationFrameRef.current = window.requestAnimationFrame(drawVideoFrame)
+        if (isMounted) {
+          setError('Unable to access camera. Please check permissions.')
+          console.error('Camera error:', err)
+        }
       }
     }
 
     startCamera()
 
     return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop())
+      isMounted = false
+
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop())
+        streamRef.current = null
       }
       if (animationFrameRef.current) {
         window.cancelAnimationFrame(animationFrameRef.current)
       }
     }
-  }, [])
+  }, [drawVideoFrame])
 
   // Stop animation frame when image is captured
   useEffect(() => {
@@ -71,13 +87,6 @@ export const Camera = ({ onCapture, onClose }) => {
   const handleRetake = () => {
     setCapturedImage(null)
     // Restart drawing frames
-    const drawVideoFrame = () => {
-      if (videoRef.current && canvasRef.current) {
-        const context = canvasRef.current.getContext('2d')
-        context.drawImage(videoRef.current, 0, 0)
-        animationFrameRef.current = window.requestAnimationFrame(drawVideoFrame)
-      }
-    }
     drawVideoFrame()
   }
 
@@ -88,8 +97,8 @@ export const Camera = ({ onCapture, onClose }) => {
   }
 
   const handleClose = () => {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop())
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop())
     }
     if (animationFrameRef.current) {
       window.cancelAnimationFrame(animationFrameRef.current)
