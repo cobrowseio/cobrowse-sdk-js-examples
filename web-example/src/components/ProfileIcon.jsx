@@ -1,24 +1,20 @@
 import { useEffect, useState } from 'react'
 import Icon from './Icon'
 import styles from './ProfileIcon.module.css'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 
-const ProfileIcon = ({ size = 'small', invert = false, component: Component = 'div', ...passthroughProps }) => {
-  const [profilePhoto, setProfilePhoto] = useState(() => window.localStorage.getItem('userProfilePhoto'))
+const ProfileIcon = ({ size = 'small', invert = false, component: Component = 'div', ...props }) => {
+  const [storedProfilePhoto] = useLocalStorage('userProfilePhoto')
+  const [profilePhoto, setProfilePhoto] = useState(() => storedProfilePhoto)
 
   useEffect(() => {
-    const handleStorageChange = () => {
-      const updatedPhoto = window.localStorage.getItem('userProfilePhoto')
-      setProfilePhoto(updatedPhoto)
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-    return () => window.removeEventListener('storage', handleStorageChange)
-  }, [])
+    setProfilePhoto(storedProfilePhoto)
+  }, [storedProfilePhoto])
 
   return (
     <Component
-      {...passthroughProps}
-      className={`${passthroughProps.className || ''} ${styles.icon} ${styles[size]} ${invert ? styles.invert : ''} unredacted`}
+      {...props}
+      className={`${props.className || ''} ${styles.icon} ${styles[size]} ${invert ? styles.invert : ''} unredacted`}
     >
       {profilePhoto
         ? (

@@ -4,6 +4,7 @@ import LinkButton from './LinkButton'
 import styles from './ProfileView.module.css'
 import Redacted from './Redacted'
 import { Camera } from './Camera.jsx'
+import { useLocalStorage } from '../hooks/useLocalStorage.js'
 
 const NAME = 'Frank Spencer'
 const EMAIL = 'f.spencer@example.com'
@@ -11,13 +12,14 @@ const EMAIL = 'f.spencer@example.com'
 const ProfileView = ({ actions }) => {
   const [isUpdatingProfilePhoto, setIsUpdatingProfilePhoto] = useState(false)
   const [photoVersion, setPhotoVersion] = useState(0)
+  const [, setProfilePhoto] = useLocalStorage('userProfilePhoto')
 
   const handleProfileIconClick = () => {
     setIsUpdatingProfilePhoto(true)
   }
 
   const handlePhotoCapture = (imageData) => {
-    window.localStorage.setItem('userProfilePhoto', imageData)
+    setProfilePhoto(imageData)
     setIsUpdatingProfilePhoto(false)
     setPhotoVersion(v => v + 1)
   }
@@ -28,7 +30,14 @@ const ProfileView = ({ actions }) => {
 
   return (
     <div className={styles.profile}>
-      <ProfileIcon key={photoVersion} component='button' aria-label='Update profile photo' size='large' invert onClick={handleProfileIconClick} />
+      <ProfileIcon
+        key={photoVersion}
+        component='button'
+        aria-label='Update profile photo'
+        size='large'
+        invert
+        onClick={handleProfileIconClick}
+      />
       {isUpdatingProfilePhoto
         ? (
           <Camera
