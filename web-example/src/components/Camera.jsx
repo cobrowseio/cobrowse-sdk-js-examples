@@ -166,7 +166,7 @@ export const Camera = ({ onCapture, onClose }) => {
     <div className={styles.modalOverlay} onClick={handleClose}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
         <div className={styles.header}>
-          <h2>Take Profile Photo</h2>
+          <h2>Take profile photo</h2>
           <button className={styles.closeButton} onClick={handleClose} aria-label='Close'>
             ×
           </button>
