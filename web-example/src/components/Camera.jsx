@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import styles from './Camera.module.css'
 import Button from './Button'
 import Select from './Select'
+import { FlipCamera } from '../icons/icons'
+import styles from './Camera.module.css'
+
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 
 export const Camera = ({ onCapture, onClose }) => {
   const videoRef = useRef(null)
@@ -9,7 +12,7 @@ export const Camera = ({ onCapture, onClose }) => {
   const [capturedImage, setCapturedImage] = useState(null)
   const [error, setError] = useState(null)
   const [cameras, setCameras] = useState([])
-  const [selectedCameraId, setSelectedCameraId] = useState(null)
+  const [selectedCameraId, setSelectedCameraId] = useState('user')
   const animationFrameRef = useRef(null)
   const streamRef = useRef(null)
 
@@ -24,21 +27,30 @@ export const Camera = ({ onCapture, onClose }) => {
   useEffect(() => {
     const getCameras = async () => {
       try {
-        const devices = await navigator.mediaDevices.enumerateDevices()
-        const videoDevices = devices.filter((device) => device.kind === 'videoinput')
+        if (isMobile) {
+          // Assume two cameras exist on mobile
+          setCameras([
+            { deviceId: 'user', label: 'Front Camera' },
+            { deviceId: 'environment', label: 'Back Camera' }
+          ])
+        } else {
+          // For desktop, enumerate actual devices
+          const devices = await navigator.mediaDevices.enumerateDevices()
+          const videoDevices = devices.filter((device) => device.kind === 'videoinput')
 
-        setCameras(videoDevices)
+          setCameras(videoDevices)
 
-        if (videoDevices.length > 0 && !selectedCameraId) {
-          setSelectedCameraId(videoDevices[0].deviceId)
+          if (videoDevices.length > 0) {
+            setSelectedCameraId(videoDevices[0].deviceId)
+          }
         }
       } catch (err) {
-        console.error('Error enumerating devices:', err)
+        console.error('Error getting cameras:', err)
       }
     }
 
     getCameras()
-  }, [selectedCameraId])
+  }, [])
 
   useEffect(() => {
     let isMounted = true
@@ -48,10 +60,16 @@ export const Camera = ({ onCapture, onClose }) => {
 
       try {
         const constraints = {
-          video: {
-            deviceId: selectedCameraId ? { exact: selectedCameraId } : undefined,
-            facingMode: selectedCameraId ? undefined : 'user'
-          }
+          video: {}
+        }
+
+        // Use facingMode for mobile devices, deviceId for desktop
+        if (selectedCameraId === 'user' || selectedCameraId === 'environment') {
+          constraints.video.facingMode = selectedCameraId
+        } else if (selectedCameraId) {
+          constraints.video.deviceId = { exact: selectedCameraId }
+        } else {
+          constraints.video.facingMode = 'user'
         }
         const mediaStream = await navigator.mediaDevices.getUserMedia(constraints)
 
@@ -134,6 +152,16 @@ export const Camera = ({ onCapture, onClose }) => {
     }
   }
 
+  const handleFlipCamera = () => {
+    if (!isMobile) {
+      return
+    }
+
+    setSelectedCameraId(selectedCameraId === 'user' ? 'environment' : 'user')
+  }
+
+  const hasMultipleCameras = cameras.length > 1
+
   return (
     <div className={styles.modalOverlay} onClick={handleClose}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
@@ -158,10 +186,21 @@ export const Camera = ({ onCapture, onClose }) => {
                 />
                 {!capturedImage
                   ? (
-                    <canvas
-                      ref={canvasRef}
-                      className={styles.video}
-                    />
+                    <>
+                      <canvas
+                        ref={canvasRef}
+                        className={styles.video}
+                      />
+                      {hasMultipleCameras && isMobile && (
+                        <button
+                          className={styles.flipButton}
+                          onClick={handleFlipCamera}
+                          aria-label='Flip camera'
+                        >
+                          <FlipCamera />
+                        </button>
+                      )}
+                    </>
                     )
                   : (
                     <img
@@ -174,11 +213,11 @@ export const Camera = ({ onCapture, onClose }) => {
               )}
         </div>
 
-        {cameras.length > 1 && !capturedImage && (
+        {hasMultipleCameras && !capturedImage && !isMobile && (
           <div className={styles.cameraSelector}>
-            <label htmlFor="camera-select">Camera:</label>
+            <label htmlFor='camera-select'>Camera:</label>
             <Select
-              id="camera-select"
+              id='camera-select'
               value={selectedCameraId || ''}
               onChange={(e) => setSelectedCameraId(e.target.value)}
             >
