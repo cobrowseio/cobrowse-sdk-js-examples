@@ -262,6 +262,61 @@
             }
           }
         }
+      } else if (integration === 'genesys-messaging') {
+        (function (g, e, n, es, ys) {
+          g['_genesysJs'] = e
+          g[e] = g[e] || function () {
+            (g[e].q = g[e].q || []).push(arguments)
+          }
+          g[e].t = 1 * new Date()
+          g[e].c = es
+          ys = document.createElement('script')
+          ys.async = 1
+          ys.src = n
+          ys.charset = 'utf-8'
+          document.head.appendChild(ys)
+        })(window, 'Genesys', 'https://apps.mypurecloud.com/genesys-bootstrap/genesys.min.js', {
+          environment: 'prod',
+          deploymentId: '7ca26301-6f9f-44d6-91b0-e674d0d1d69e'
+        })
+
+        // Request cobrowse session button handling
+        window.Genesys('subscribe', 'MessagingService.ready', () => {
+          const buttonId = '__cbio-genesys-request-button'
+
+          if (document.getElementById(buttonId)) {
+            return;
+          }
+
+          // Add styled button to request Cobrowse session
+          const button = document.createElement('button')
+          button.id = buttonId
+          button.className = '__cbio_ignored'
+          button.innerText = 'Request Cobrowse'
+          Object.assign(button.style, {
+            appearance: 'none',
+            position: 'fixed',
+            bottom: '34px',
+            right: '100px',
+            background: '#6100FF',
+            border: 'none',
+            borderRadius: '12px',
+            color: '#FFFFFF',
+            cursor: 'pointer',
+            padding: '10px 13px'
+          })
+          button.addEventListener('click', async () => {
+            const code = await window.CobrowseIO.createSessionCode()
+
+            window.Genesys('command', 'MessagingService.sendMessage', {
+              message: `Customer requests Cobrowse session with code: ${code}`
+            }, () => {
+              // Hide the button on successful message sent
+              button.style.display = 'none'
+            })
+          })
+          document.body.appendChild(button)
+        })
       } else if (integration === 'nice') {
         (function(n,u){
           window.CXoneDfo=n,
