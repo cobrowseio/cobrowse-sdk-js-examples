@@ -7,8 +7,8 @@ const ExternalTransactionView = ({ title, date, amount, category }) => (
     className={styles.frame}
     title='frame'
     src={`${BASE_URL}?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent(date)}&amount=${encodeURIComponent(amount)}&category=${encodeURIComponent(category)}`}
-    allowFullScreen={true}
-  ></iframe>
+    allowFullScreen
+  />
 )
 
 export default ExternalTransactionView

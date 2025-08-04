@@ -14,7 +14,7 @@ const Chart = ({ categories, currentMonthTransactionsByCategory, currentMonthSpe
       return
     }
 
-    let imageCache = {}
+    const imageCache = {}
 
     const iconPlugin = {
       id: 'iconPlugin',
@@ -48,9 +48,9 @@ const Chart = ({ categories, currentMonthTransactionsByCategory, currentMonthSpe
             ctx.drawImage(img, x - (iconSize / 2), y - (iconSize / 2), iconSize, iconSize)
           })
         })
-      },
+      }
     }
-    const ctx = chartRef.current?.getContext('2d');
+    const ctx = chartRef.current?.getContext('2d')
     const data = Object.values(currentMonthTransactionsByCategory).map((transactions) => Object.values(transactions).reduce((acc, transaction) => acc + transaction.amount, 0))
     const chart = new ChartJs(ctx, {
       type: 'doughnut',
@@ -92,7 +92,7 @@ const Chart = ({ categories, currentMonthTransactionsByCategory, currentMonthSpe
   return (
     <div className={styles.wrapper}>
       <div className={`${styles.chart} unredacted`}>
-        <canvas ref={chartRef}></canvas>
+        <canvas ref={chartRef} />
         <div className={styles.spent}>
           Spent
           <Redacted>
@@ -102,7 +102,7 @@ const Chart = ({ categories, currentMonthTransactionsByCategory, currentMonthSpe
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default Chart

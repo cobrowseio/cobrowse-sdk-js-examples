@@ -1,0 +1,9 @@
+.select {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--color-borders);
+  border-radius: 4px;
+  background: #ffffff;
+  cursor: pointer;
+  appearance: none;
+}

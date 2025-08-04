@@ -6,6 +6,7 @@ const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser, removeUser] = useLocalStorage('user', null)
+  const [, , removeUserProfilePhoto] = useLocalStorage('userProfilePhoto', null)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -17,14 +18,15 @@ export const AuthProvider = ({ children }) => {
 
   const logout = useCallback(async () => {
     removeUser()
+    removeUserProfilePhoto()
 
     navigate('/login' + location.search, { replace: true })
-  }, [removeUser, navigate, location])
+  }, [removeUser, removeUserProfilePhoto, navigate, location])
 
   const value = useMemo(() => ({
     user,
     login,
-    logout,
+    logout
   }), [user, login, logout])
 
   return (
