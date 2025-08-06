@@ -29,3 +29,8 @@ Example URLs:
 - ServiceNow [https://cobrowse-sdk-js-examples.cbrws.io/web-example/demo?integration=servicenow&service-now-url=https://dev305592.service-now.com&license=Xskn6AwiVgzBcQ&demo=true](https://cobrowse-sdk-js-examples.cbrws.io/web-example/demo?integration=servicenow&service-now-url=https://dev305592.service-now.com&license=Xskn6AwiVgzBcQ&demo=true)
 
   The `service-now-url` parameter can be used to configure your own service now instance.
+
+
+- Talkdesk [http://cobrowse-sdk-js-examples.cbrws.io/web-example/demo?integration=talkdesk&license=rV6E9pfNJkxm8w&talkdesk-touchpoint-id=5ad69c3adf6049989cb7f2b12018b0e3](http://cobrowse-sdk-js-examples.cbrws.io/web-example/demo?integration=talkdesk&license=rV6E9pfNJkxm8w&talkdesk-touchpoint-id=5ad69c3adf6049989cb7f2b12018b0e3)
+  
+  The `talkdesk-touchpoint-id` can be used to configure your talkdesk conversation touchpoint.

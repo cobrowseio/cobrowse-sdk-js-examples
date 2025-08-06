@@ -387,6 +387,27 @@
           });
         }
         document.body.appendChild(script)
+      } else if (integration === 'talkdesk') {
+        const params = new URLSearchParams(window.location.search);
+        const node = 'tdWebchat'
+        const divContainer = document.createElement("div");
+        divContainer.id = node;
+        document.body.appendChild(divContainer);
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        script.charset = "UTF-8";
+        script.id = "tdwebchatscript";
+        script.src = "https://talkdeskchatsdk.talkdeskapp.com/v2/talkdeskchatsdk.js";
+        script.async = true;
+        document.body.appendChild(script)
+        script.onload = function() {
+          const touchpointId = params.get('talkdesk-touchpoint-id') ?? '5ad69c3adf6049989cb7f2b12018b0e3'
+          const region = params.get('talkdesk-region') ?? 'td-us-1'
+          const props = { touchpointId, accountId: "", region }
+          const configs = { enableValidation: false, enableEmoji: true, enableUserInput: true, enableAttachments: true }
+          window.webchat = TalkdeskChatSDK(node, props);
+          window.webchat.init(configs);
+        };
       }
     </script>
   </body>
