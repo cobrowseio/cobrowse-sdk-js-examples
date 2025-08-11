@@ -412,14 +412,14 @@
         const params = new URLSearchParams(window.location.search);
         
         const ccaipConfig = {
-          'company-id': params.get('company-id'),
+          companyId: params.get('company-id'),
           host: params.get('host'),
           jwt: params.get('jwt')
         };
 
         // Validate required parameters
         const requiredParams = [
-          { key: 'company-id', name: 'Company ID' },
+          { key: 'companyId', name: 'company-id' },
           { key: 'host', name: 'CCAIP host' },
           { key: 'jwt', name: 'CCAIP JWT' }
         ];
