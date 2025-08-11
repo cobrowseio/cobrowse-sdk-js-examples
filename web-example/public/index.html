@@ -408,6 +408,53 @@
           window.webchat = TalkdeskChatSDK(node, props);
           window.webchat.init(configs);
         };
+      } else if (integration === 'ccaip') {
+        const params = new URLSearchParams(window.location.search);
+        
+        const ccaipConfig = {
+          companyId: params.get('company-id'),
+          host: params.get('host'),
+          jwt: params.get('jwt')
+        };
+
+        // Validate required parameters
+        const requiredParams = [
+          { key: 'companyId', name: 'company-id' },
+          { key: 'host', name: 'CCAIP host' },
+          { key: 'jwt', name: 'CCAIP JWT' }
+        ];
+
+        let hasAllParams = true;
+        for (const param of requiredParams) {
+          if (!ccaipConfig[param.key]) {
+            console.error(`Missing ${param.name} parameter`);
+            hasAllParams = false;
+          }
+        }
+
+        if (hasAllParams) {
+          CobrowseIO.ignoredViews = ['#ujet-widget'];
+
+          const ccaipScript = document.createElement('script');
+          ccaipScript.src = 'https://websdk.ujet.co/v2/loader.js';
+          ccaipScript.id = 'CCAIP_WEB_SDK';
+          
+          ccaipScript.onload = () => {
+            const ujet = new UJET({ 
+              companyId: ccaipConfig.companyId, 
+              authenticate: ccaipConfig.jwt, 
+              host: ccaipConfig.host,
+              launcher: {
+                style: {
+                  '--background-color': 'rgb(97, 0, 255)',
+                  '--icon-color': '#fff',
+                }
+              }
+            });
+          };
+
+          document.body.appendChild(ccaipScript);
+        }
       }
     </script>
   </body>
