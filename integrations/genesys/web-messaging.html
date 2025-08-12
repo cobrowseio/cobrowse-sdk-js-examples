@@ -40,6 +40,43 @@
       document.getElementById('support-code').innerHTML = '<p>Support Code expired.</p>';
       document.getElementById('generate-button').style.display = 'inline-block';
     }
+
+    // Request cobrowse session button handling
+    window.Genesys('subscribe', 'MessagingService.ready', () => {
+      const buttonId = '__cbio-genesys-request-button'
+      if (document.getElementById(buttonId)) {
+        return;
+      }
+     // Add styled button to request Cobrowse session
+     const button = document.createElement('button')
+     button.id = buttonId
+     button.className = '__cbio_ignored'
+     button.innerText = 'Request Cobrowse'
+     Object.assign(button.style, {
+       appearance: 'none',
+       position: 'fixed',
+       bottom: '34px',
+       right: '100px',
+       background: '#6100FF',
+       border: 'none',
+       borderRadius: '12px',
+       color: '#FFFFFF',
+       cursor: 'pointer',
+       padding: '10px 13px'
+     })
+   
+     button.addEventListener('click', async () => {
+       const code = await window.CobrowseIO.createSessionCode()
+       window.Genesys('command', 'MessagingService.sendMessage', {
+           message: `Customer requests Cobrowse session with code: ${code}`
+         }, () => {  
+          // Hide the button on successful message sent
+          button.style.display = 'none'
+       })
+     })
+      
+     document.body.appendChild(button)
+})
 </script>
 <script type="text/javascript" charset="utf-8">
   (function (g, e, n, es, ys) {
