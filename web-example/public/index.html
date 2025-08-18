@@ -380,7 +380,7 @@
             const chat = new ServiceNowChat({
               instance: snUrl,
               context: {
-                skip_load_history: 1,
+                skip_load_history: true,
                 cobrowse_device_id: deviceId
               },
             });
