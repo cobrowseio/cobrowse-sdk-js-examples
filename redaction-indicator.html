@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Redaction indicator example</title>
+
+    <script>
+        var urlParams = new URLSearchParams(window.location.search);
+
+        (function(w,t,c,p,s,e){p=new Promise(function(r){w[c]={client:function(){if(!s){
+        s=document.createElement(t);s.src='https://js.cobrowse.io/CobrowseIO.js';s.async=1;
+        e=document.getElementsByTagName(t)[0];e.parentNode.insertBefore(s,e);s.onload=function()
+        {r(w[c]);};}return p;}};});})(window,'script','CobrowseIO');
+
+        // FOR SECURITY REASONS DO NOT SET YOUR LICENSE KEY OR API USING QUERY PARAMETERS IN YOUR OWN APPLICATION
+        CobrowseIO.license = urlParams.get('license') || 'trial'; // change to your license key
+        CobrowseIO.api = urlParams.get('api') || 'https://api.cobrowse.io';
+        CobrowseIO.customData = { device_name: "Redaction indicator example" }
+
+        // Any elements with the class "redacted" will be redacted
+        CobrowseIO.redactedViews = ['.redacted'];
+
+        CobrowseIO.client().then(() => {
+            CobrowseIO.start();
+
+            // If we are already in a cobrowse session on page load, show the redaction indicators
+            if (CobrowseIO.currentSession) {
+                showRedactionIndicators();
+            }
+
+            CobrowseIO.on('session.updated', (session) => {
+                if (session.state() === 'active') {
+                    // Show redaction indicators when the session is active
+                    showRedactionIndicators();
+                } else {
+                    hideRedactionIndicators();
+                }
+            });
+        });
+
+        const showRedactionIndicators = () => {
+            // Add `redaction-indicator` class to redacted elements
+            const redactedElements = document.querySelectorAll('.redacted');
+            redactedElements.forEach(element => {
+                element.classList.add('redaction-indicator');
+            });
+        };
+
+        const hideRedactionIndicators = () => {
+            // Remove `redaction-indicator` class from redacted elements
+            const redactedElements = document.querySelectorAll('.redacted');
+            redactedElements.forEach(element => {
+                element.classList.remove('redaction-indicator');
+            });
+        };
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Redaction indicator example</h1>
+
+        <section>
+            <h2>The two inputs below are redacted and won't be seen by the agent.</h2>
+            <h2>This example will show a redaction indicator to the customer to indicate what elements are redacted.</h2>
+            <form id="contact-form">
+                <fieldset>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" class="redacted" placeholder="Your full name" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="redacted" placeholder="your@email.com" required>
+
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Type your message here..." required></textarea>
+                    <small>⚠️ Please do not enter any sensitive or personal information in this box.</small>
+
+                    <button type="submit" class="primary">Submit</button>
+                </fieldset>
+            </form>
+        </section>
+    </div>
+
+    <style>
+        /* Redaction indicator styling */
+        .redacted.redaction-indicator {
+            border: 2px dashed red !important;
+        }
+
+    </style>
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Stolzl, system-ui, Avenir, Helvetica, Arial, sans-serif;
+            font-size: .875rem;
+            line-height: 1.25rem;
+            color: rgb(4, 13, 60);
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2em;
+            line-height: 2;
+            font-weight: 500;
+            letter-spacing: -0.025em;
+        }
+
+        h2 {
+            font-size: 1rem;
+            line-height: 1.75rem;
+            font-weight: 400;
+            padding-bottom: .5rem;
+        }
+
+        section {
+            min-height: 80px;
+            margin-bottom: 20px;
+        }
+
+        fieldset {
+            padding: 0;
+            border: none;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            color: rgb(14, 12, 38);
+            background-color: rgb(246, 246, 247);
+            margin-bottom: 1rem;
+            padding: .5rem 0.75rem;
+            border: 1px solid transparent;
+            border-radius: 0.5rem;
+            outline-width: 1px;
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        input:hover,
+        textarea:hover {
+            box-shadow: 0 0 #0000, 0 0 #0000, inset 0 0 0 1px #C7CBFE;
+        }
+
+        input:focus,
+        textarea:focus {
+            box-shadow: 0 0 #0000, 0 0 #0000, inset 0 0 0 1px #6556F0;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(111, 109, 130, .5);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        small {
+            display: block;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            color: rgba(111, 109, 130, .75);
+        }
+
+        button {
+            color: rgb(14 12 38);
+            background-color: rgb(246 245 247);
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            cursor: pointer;
+            height: 2.5rem;
+            margin: 0;
+            padding: 0 1rem;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            background-color: rgb(238 239 241);
+        }
+
+        .primary {
+            color: rgb(246, 245, 247);
+            background-color: rgb(101, 86, 240);
+        }
+
+        .primary:hover {
+            background-color: rgb(65, 38, 167);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                padding: 0 0.5rem;
+            }
+
+            body {
+                padding: 0.5rem;
+            }
+
+            h1 {
+                font-size: 1.75em;
+                text-align: center;
+            }
+
+            h2 {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.25rem;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            input,
+            textarea {
+                padding: 0.75rem;
+                font-size: 1rem;
+            }
+
+            button {
+                width: 100%;
+                height: 3rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</body>
+
+</html>
