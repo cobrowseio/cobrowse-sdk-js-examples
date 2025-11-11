@@ -4,6 +4,7 @@ import { formatAmount } from '../utils/formatAmount'
 import { formatDate } from '../utils/formatDate'
 import Icon from './Icon'
 import LinkButton from './LinkButton' // Change this import
+import Redacted from './Redacted'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -53,8 +54,12 @@ const TransactionDetails = ({ transaction }) => {
       <div className={styles.header}>
         <div className={styles.details}>
           <h1 className={styles.title}>{transaction.title}</h1>
-          <p className={styles.amount}>{formatAmount(transaction.amount)}</p>
-          <p className={styles.subtitle}>{formatDate(transaction.date)}</p>
+          <Redacted>
+            <p className={styles.amount}>{formatAmount(transaction.amount)}</p>
+          </Redacted>
+          <Redacted>
+            <p className={styles.subtitle}>{formatDate(transaction.date)}</p>
+          </Redacted>
         </div>
         <div className={styles.category}>
           <Icon name={transaction.icon} style={{ color: transaction.color }} />
