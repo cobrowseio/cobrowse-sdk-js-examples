@@ -458,12 +458,14 @@
       } else if (integration === 'amazonconnect') {
         CobrowseIO.client().then(function(){
           const deviceId = CobrowseIO.deviceId();
+          CobrowseIO.ignoredViews = ['#amazon-connect-chat-widget'];
           const x = 'amazon_connect';
 
           const params = new URLSearchParams(window.location.search);
-          const id = params.get('amazon_id') ?? '16c8608a-5af7-4af6-98e6-bca8e1348802'
+          const id = params.get('amazon_id') ?? 'a13e5783-f656-417f-8fb8-1646acf925c4'
           const name = params.get('amazon_name') ?? 'Frank Spencer'
-          const base = params.get('amazon_base') ?? 'cobrowse-direct.my.connect.aws'
+          const base = params.get('amazon_base') ?? 'cobrowse-demo.my.connect.aws'
+          const snippetId = params.get('amazon_snippetid') ?? 'QVFJREFIaFpvSmlkVlA5ZmlEZlNzMXhjOGF5cU1QQXl4Yk5PTHVoQm5IYWZiS21Wd0FIMWNOVnhLZU5wNEZzL3BQUXgxVDVEQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNZXlHcFdibUl5Y3JmemYvV0FnRVFnQ3M3cHlOM0k0ZHhWajU5RmFmanpPQlpEN2szeTZIOXBtZk1aYjJ1R0pLRmNDblpJNlRlRWtVYVFDTkQ6OjdRdVR0Q1h0S3k3amNDeUtZWlI1ZnMxTUt4TkthRTVDK1RGQ2Z0SFkrWDNuRnBPckZ6dE41Zm4yOFViVUJDSFRLNkRjMW11aFJPMm9oWDdaT3VjUnFNQ083VHRMZlc4YnNSMzdBczJwZUFNWHhLanJoWmtZNllQWWlNd3RHU09LOEtuaWpOSU13Z3RkRUloV0l1dVhFdjJQWUlEa0ZObz0='
 
           const w = window;
           const d = document;
@@ -478,13 +480,18 @@
           amazon_connect('styles', { iconType: 'CHAT', openChat: { color: '#ffffff', backgroundColor: '#123456' }, closeChat: { color: '#ffffff', backgroundColor: '#123456'} });
           // https://docs.aws.amazon.com/connect/latest/adminguide/pass-display-name-chat.html
           amazon_connect('customerDisplayName', (callback) => callback(name));
-          amazon_connect('snippetId', 'QVFJREFIajZXQjcyUXcrNFBEZVZpU0tIdzdFSjJTRnF3a2E2WXVITnhwS1FrcWpBd1FFZjdsbCt4REtYNjFXSGxEbDhhdkx4QUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNU2thU1ZDOExVekM0cUIvR0FnRVFnQ3U5V1BtN1dwZkFjUGxJUWdrQkNmMi91WW5jYnlURUxCSi9vZzFLSUd2UTFBV3hON3JDeUVjSERncUk6OnBwQXZJRW1kV1BjSjBBYWROR2EvQWxmTWJ6U095YnN0QTlaMlI4MFMxY2VkdVRVWERkb2dJenpCbnZVditHMWRCSXFsRWJ2M3JLN29xaWVBVjVqOUdhZEJUQUN3U05kWEc2aVBIMHVyT2x4Q0YzK0lhck9Pd3JSak9PYmpOUkxXMENMQ2ZZdjNLRVQ4SHh6bllkOTdBY3hJK05McnBBVT0=');
+          amazon_connect('snippetId', snippetId);
           amazon_connect('supportedMessagingContentTypes', [ 'text/plain', 'text/markdown', 'application/vnd.amazonaws.connect.message.interactive', 'application/vnd.amazonaws.connect.message.interactive.response' ]);
-          // https://docs.aws.amazon.com/connect/latest/adminguide/supported-snippet-fields.html
-          // TODO: Move this one into the SDK. There may or may not be a race condition here. to be determined..
           amazon_connect('contactAttributes', {
               'cobrowse_device_id': deviceId,
           });
+          amazon_connect('registerCallback', {
+            PARTICIPANT_JOINED: (_, { chatDetails }) => {
+              CobrowseIO.customData = {
+                amazon_connect_contact_id: chatDetails?.contactId
+              }
+            }
+          })
         })
       }
     </script>
