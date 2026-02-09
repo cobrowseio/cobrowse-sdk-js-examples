@@ -361,9 +361,9 @@
         script.src = 'https://oc-cdn-ocprod.azureedge.net/livechatwidget/scripts/LiveChatBootstrapper.js'
         script.id = 'Microsoft_Omnichannel_LCWidget'
         const params = new URLSearchParams(window.location.search);
-        script.setAttribute('data-app-id', params.get('dynamics-app-id'))
-        script.setAttribute('data-org-id', params.get('dynamics-org-id'))
-        script.setAttribute('data-org-url', params.get('dynamics-org-url'))
+        script.setAttribute('data-app-id', params.get('dynamics-app-id') ?? '25eadfd0-e1d7-44c7-bf8d-d0492f151422')
+        script.setAttribute('data-org-id', params.get('dynamics-org-id') ?? 'e90be679-05c9-f011-89f3-6045bd003e0f')
+        script.setAttribute('data-org-url', params.get('dynamics-org-url') ?? 'https://m-e90be679-05c9-f011-89f3-6045bd003e0f.us.omnichannelengagementhub.com')
         script.setAttribute('data-lcw-version', 'prod')
         document.body.appendChild(script)
       } else if (integration === 'servicenow') {

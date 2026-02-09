@@ -6,5 +6,6 @@ export const licenses = {
   salesforce: 'IKIC3uqyhRJrYg',
   nice: 'ORTrVWkunWytUA',
   five9: '_lNWvygfLTY0kA',
-  talkdesk: 'rV6E9pfNJkxm8w'
+  talkdesk: 'rV6E9pfNJkxm8w',
+  dynamics: 'LErxNk_PrhOqgg'
 }
