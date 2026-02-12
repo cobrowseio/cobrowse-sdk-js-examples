@@ -465,7 +465,8 @@
           const id = params.get('amazon_id') ?? 'a13e5783-f656-417f-8fb8-1646acf925c4'
           const name = params.get('amazon_name') ?? 'Frank Spencer'
           const base = params.get('amazon_base') ?? 'cobrowse-demo.my.connect.aws'
-          const snippetId = params.get('amazon_snippetid') ?? 'QVFJREFIaFpvSmlkVlA5ZmlEZlNzMXhjOGF5cU1QQXl4Yk5PTHVoQm5IYWZiS21Wd0FIMWNOVnhLZU5wNEZzL3BQUXgxVDVEQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNZXlHcFdibUl5Y3JmemYvV0FnRVFnQ3M3cHlOM0k0ZHhWajU5RmFmanpPQlpEN2szeTZIOXBtZk1aYjJ1R0pLRmNDblpJNlRlRWtVYVFDTkQ6OjdRdVR0Q1h0S3k3amNDeUtZWlI1ZnMxTUt4TkthRTVDK1RGQ2Z0SFkrWDNuRnBPckZ6dE41Zm4yOFViVUJDSFRLNkRjMW11aFJPMm9oWDdaT3VjUnFNQ083VHRMZlc4YnNSMzdBczJwZUFNWHhLanJoWmtZNllQWWlNd3RHU09LOEtuaWpOSU13Z3RkRUloV0l1dVhFdjJQWUlEa0ZObz0='
+          const urlSnippet = params.has('amazon_snippetid') ? decodeURIComponent(params.get('amazon_snippetid')) : null
+          const snippetId = urlSnippet ?? 'QVFJREFIaFpvSmlkVlA5ZmlEZlNzMXhjOGF5cU1QQXl4Yk5PTHVoQm5IYWZiS21Wd0FIMWNOVnhLZU5wNEZzL3BQUXgxVDVEQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNZXlHcFdibUl5Y3JmemYvV0FnRVFnQ3M3cHlOM0k0ZHhWajU5RmFmanpPQlpEN2szeTZIOXBtZk1aYjJ1R0pLRmNDblpJNlRlRWtVYVFDTkQ6OjdRdVR0Q1h0S3k3amNDeUtZWlI1ZnMxTUt4TkthRTVDK1RGQ2Z0SFkrWDNuRnBPckZ6dE41Zm4yOFViVUJDSFRLNkRjMW11aFJPMm9oWDdaT3VjUnFNQ083VHRMZlc4YnNSMzdBczJwZUFNWHhLanJoWmtZNllQWWlNd3RHU09LOEtuaWpOSU13Z3RkRUloV0l1dVhFdjJQWUlEa0ZObz0='
 
           const w = window;
           const d = document;
