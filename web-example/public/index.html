@@ -113,40 +113,28 @@
         };
         (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/g7s11eec';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
       } else if (integration === 'salesforce') {
-        const initESW = function(gslbBaseURL) {
-          embedded_svc.settings.displayHelpButton = true //Or false
-          embedded_svc.settings.language = '' //For example, enter 'en' or 'en-US'
+        function initEmbeddedMessaging() {
+          try {
+            embeddedservice_bootstrap.settings.language = 'en_US'
 
-          embedded_svc.settings.enabledFeatures = ['LiveAgent']
-          embedded_svc.settings.entryFeature = 'LiveAgent'
-
-          embedded_svc.init(
-            'https://cobrowse-demo-2-dev-ed.my.salesforce.com',
-            'https://cobrowse-demo-2-dev-ed.my.salesforce-sites.com/liveAgentSetupFlow',
-            gslbBaseURL,
-            '00D8Z000000btHh',
-            'Group1',
-            {
-              baseLiveAgentContentURL: 'https://c.la5-c2-ia5.salesforceliveagent.com/content',
-              deploymentId: '5728Z000000XiPh',
-              buttonId: '5738Z000000XiRi',
-              baseLiveAgentURL: 'https://d.la5-c2-ia5.salesforceliveagent.com/chat',
-              eswLiveAgentDevName: 'Group1',
-              isOfflineSupportEnabled: true
-            }
-          )
+            embeddedservice_bootstrap.init(
+              '00D8Z000000btHh',
+              'Enhanced_Chat',
+              'https://cobrowse-demo-2-dev-ed.my.site.com/ESWEnhancedChat1770982663594',
+              {
+                scrt2URL: 'https://cobrowse-demo-2-dev-ed.my.salesforce-scrt.com'
+              }
+            )
+          } catch (err) {
+            console.error('Error loading Embedded Messaging: ', err)
+          }
         }
+        const script = document.createElement('script')
 
-        if (!window.embedded_svc) {
-          const s = document.createElement('script')
-          s.setAttribute('src', 'https://cobrowse-demo-2-dev-ed.my.salesforce.com/embeddedservice/5.0/esw.min.js')
-          s.onload = function() {
-            initESW(null)
-          };
-          document.body.appendChild(s)
-        } else {
-          initESW('https://service.force.com')
-        }
+        script.src = 'https://cobrowse-demo-2-dev-ed.my.site.com/ESWEnhancedChat1770982663594/assets/js/bootstrap.min.js'
+        script.onload = initEmbeddedMessaging
+
+        document.body.appendChild(script)
       } else if (integration === 'genesys') {
         // Load this script programatically
         const script = document.createElement('script')
@@ -410,7 +398,7 @@
         };
       } else if (integration === 'ccaip') {
         const params = new URLSearchParams(window.location.search);
-        
+
         const ccaipConfig = {
           companyId: params.get('company-id'),
           host: params.get('host'),
@@ -438,11 +426,11 @@
           const ccaipScript = document.createElement('script');
           ccaipScript.src = 'https://websdk.ujet.co/v2/loader.js';
           ccaipScript.id = 'CCAIP_WEB_SDK';
-          
+
           ccaipScript.onload = () => {
-            const ujet = new UJET({ 
-              companyId: ccaipConfig.companyId, 
-              authenticate: ccaipConfig.jwt, 
+            const ujet = new UJET({
+              companyId: ccaipConfig.companyId,
+              authenticate: ccaipConfig.jwt,
               host: ccaipConfig.host,
               launcher: {
                 style: {
