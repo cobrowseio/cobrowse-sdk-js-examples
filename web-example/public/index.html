@@ -129,6 +129,9 @@
             console.error('Error loading Embedded Messaging: ', err)
           }
         }
+
+        CobrowseIO.ignoredViews = ['.embedded-messaging', '.embeddedMessagingSiteContextFrame']
+
         const script = document.createElement('script')
 
         script.src = 'https://cobrowse-demo-2-dev-ed.my.site.com/ESWEnhancedChat1770982663594/assets/js/bootstrap.min.js'
