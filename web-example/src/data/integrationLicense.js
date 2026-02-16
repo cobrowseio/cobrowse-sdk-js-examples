@@ -7,5 +7,6 @@ export const licenses = {
   nice: 'ORTrVWkunWytUA',
   five9: '_lNWvygfLTY0kA',
   talkdesk: 'rV6E9pfNJkxm8w',
-  dynamics: 'LErxNk_PrhOqgg'
+  dynamics: 'LErxNk_PrhOqgg',
+  amazonconnect: 'jqtd_d2rlUvsGA'
 }
