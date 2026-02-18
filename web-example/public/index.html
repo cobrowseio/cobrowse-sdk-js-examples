@@ -442,11 +442,11 @@
           CobrowseIO.ignoredViews = ['#amazon-connect-chat-widget'];
 
           const params = new URLSearchParams(window.location.search);
-          const id = params.get('amazon_id') ?? 'a13e5783-f656-417f-8fb8-1646acf925c4'
+          const id = params.get('amazon_id') ?? '6f8a8e8c-63ae-464e-a888-414c861e976e'
           const name = params.get('amazon_name') ?? 'Frank Spencer'
-          const base = params.get('amazon_base') ?? 'https://cobrowse-demo.my.connect.aws'
+          const base = params.get('amazon_base') ?? 'https://cobrowse-saml.my.connect.aws'
           const urlSnippet = params.has('amazon_snippetid') ? decodeURIComponent(params.get('amazon_snippetid')) : null
-          const snippetId = urlSnippet ?? 'QVFJREFIaFpvSmlkVlA5ZmlEZlNzMXhjOGF5cU1QQXl4Yk5PTHVoQm5IYWZiS21Wd0FIMWNOVnhLZU5wNEZzL3BQUXgxVDVEQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNZXlHcFdibUl5Y3JmemYvV0FnRVFnQ3M3cHlOM0k0ZHhWajU5RmFmanpPQlpEN2szeTZIOXBtZk1aYjJ1R0pLRmNDblpJNlRlRWtVYVFDTkQ6OjdRdVR0Q1h0S3k3amNDeUtZWlI1ZnMxTUt4TkthRTVDK1RGQ2Z0SFkrWDNuRnBPckZ6dE41Zm4yOFViVUJDSFRLNkRjMW11aFJPMm9oWDdaT3VjUnFNQ083VHRMZlc4YnNSMzdBczJwZUFNWHhLanJoWmtZNllQWWlNd3RHU09LOEtuaWpOSU13Z3RkRUloV0l1dVhFdjJQWUlEa0ZObz0='
+          const snippetId = urlSnippet ?? 'QVFJREFIaFpvSmlkVlA5ZmlEZlNzMXhjOGF5cU1QQXl4Yk5PTHVoQm5IYWZiS21Wd0FGZjBVTWxSM25mTW51U1YyRnBOdTE4QUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNRXRTQk9VOXV5QW9hUWJHU0FnRVFnQ3VGSXpEb2IyN09obFBveHVpU0l6OUE3NzBhcGNZRUV1UVg4b0p3YUc2RXJHM2xVenNTNVBWZWpKc3A6OlpDbENsT0FqTlRIeWI1MlpCUzlLTisycGY1NkNGbG8xVEhFYnM4eXlBcnFIcktVM2xUVWxaaEZUNUl3bFZJVlNHTFJyZ1dWWjhOWmZXVWNVblNVaGFsUWNuSHYwZE8yVTI4YWxndHMyWTJEQi9BMTVPRUhrQ1ZwTkZ1ZnlFSVpVUXllZ0NjZWtNdTJoaGljZXhJRkorMW12dlVXRm8vMD0='
 
           const script = document.createElement('script');
           script.src=`${base}/connectwidget/static/amazon-connect-chat-interface-client.js`;
