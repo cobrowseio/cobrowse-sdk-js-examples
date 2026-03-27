@@ -9,9 +9,26 @@
 
 ## Query Parameters
 
-The web demo can be used with `api`, `license`, `registration`, `sdk_path` and `custom_data` parameters. For security reasons **do not allow** for the `license` key, `sdk_path` or `api` to be set via a query parameter in your own application.
+The web demo supports these top-level query parameters:
 
-Different integrations are also supported out of the box with the `integration` parameter: salesforce, salesforce-v1, zendesk, genesys, genesys-messaging, freshchat, talkdesk, nice, five9, amazonconnect or dynamics.
+- `api`
+- `license`
+- `registration`
+- `sdk_path`
+- `custom_data` using `key:value,key2:value2` format
+- `redacted_views` as a comma-separated list of selectors
+- `unredacted_views` as a comma-separated list of selectors
+- `ignored_views` as a comma-separated list of selectors
+- `capabilities` as a comma-separated list
+- `custom_session_controls` as `true` or `false`
+- `allow_headless` as `true` or `false`
+- `session_code`
+- `demo` as `true` to bypass the login flow
+- `integration`
+
+For security reasons **do not allow** for the `license` key, `sdk_path` or `api` to be set via a query parameter in your own application.
+
+Different integrations are also supported out of the box with the `integration` parameter: `salesforce`, `salesforce-v1`, `zendesk`, `freshdesk`, `freshchat`, `intercom`, `genesys`, `genesys-messaging`, `talkdesk`, `nice`, `five9`, `amazonconnect`, `servicenow`, `ccaip` or `dynamics`.
 
 Example URLs:
 
@@ -29,6 +46,21 @@ Example URLs:
 - ServiceNow [https://cobrowse-sdk-js-examples.cbrws.io/web-example/demo?integration=servicenow&service-now-url=https://dev305592.service-now.com&license=Xskn6AwiVgzBcQ&demo=true](https://cobrowse-sdk-js-examples.cbrws.io/web-example/demo?integration=servicenow&service-now-url=https://dev305592.service-now.com&license=Xskn6AwiVgzBcQ&demo=true)
 
   The `service-now-url` parameter can be used to configure your own service now instance.
+
+- CCAIP
+
+  The `ccaip` integration requires all of the following query parameters:
+  - `company-id`
+  - `host`
+  - `jwt`
+
+- Amazon Connect
+
+  The `amazonconnect` integration also supports these query parameters:
+  - `amazon_id`
+  - `amazon_name`
+  - `amazon_base`
+  - `amazon_snippetid`
 
 
 - Talkdesk [http://cobrowse-sdk-js-examples.cbrws.io/web-example/demo?integration=talkdesk&license=rV6E9pfNJkxm8w&talkdesk-touchpoint-id=6924c7bb29684d69ad1c8cd73cf612c4&talkdesk-region=td-us-1](http://cobrowse-sdk-js-examples.cbrws.io/web-example/demo?integration=talkdesk&license=rV6E9pfNJkxm8w&talkdesk-touchpoint-id=6924c7bb29684d69ad1c8cd73cf612c4&talkdesk-region=td-us-1)
