@@ -102,6 +102,32 @@
           created_at: Date.now() // Signup date as a Unix timestamp
         };
         (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/g7s11eec';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+      } else if (integration === 'salesforce-v2') {
+        function initEmbeddedMessaging() {
+          try {
+            embeddedservice_bootstrap.settings.language = 'en_US'
+
+            embeddedservice_bootstrap.init(
+              '00D8Z000000btHh',
+              'Enhanced_Chat_v2',
+              'https://cobrowse-demo-2-dev-ed.my.site.com/ESWEnhancedChatv21774448528697',
+              {
+                scrt2URL: 'https://cobrowse-demo-2-dev-ed.my.salesforce-scrt.com'
+              }
+            )
+          } catch (err) {
+            console.error('Error loading Embedded Messaging: ', err)
+          }
+        }
+
+        CobrowseIO.ignoredViews = ['.embedded-messaging', '.embeddedMessagingFrame']
+
+        const script = document.createElement('script')
+
+        script.src = 'https://cobrowse-demo-2-dev-ed.my.site.com/ESWEnhancedChatv21774448528697/assets/js/bootstrap.min.js'
+        script.onload = initEmbeddedMessaging
+
+        document.body.appendChild(script)
       } else if (integration === 'salesforce') {
         function initEmbeddedMessaging() {
           try {
@@ -453,7 +479,7 @@
           script.async=1;
           script.id=id;
           document.getElementsByTagName('head')[0].appendChild(script);
-          window.amazon_connect =  window.amazon_connect ?? function() { 
+          window.amazon_connect =  window.amazon_connect ?? function() {
             (window.amazon_connect.ac = window.amazon_connect.ac ?? []).push(arguments)
           };
           amazon_connect('styles', { iconType: 'CHAT', openChat: { color: '#ffffff', backgroundColor: '#123456' }, closeChat: { color: '#ffffff', backgroundColor: '#123456'} });
