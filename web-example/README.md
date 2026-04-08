@@ -28,7 +28,7 @@ The web demo supports these top-level query parameters:
 
 For security reasons **do not allow** for the `license` key, `sdk_path` or `api` to be set via a query parameter in your own application.
 
-Different integrations are also supported out of the box with the `integration` parameter: `salesforce`, `salesforce-v1`, `zendesk`, `freshdesk`, `freshchat`, `intercom`, `genesys`, `genesys-messaging`, `talkdesk`, `nice`, `five9`, `amazonconnect`, `servicenow`, `ccaip` or `dynamics`.
+Different integrations are also supported out of the box with the `integration` parameter: `salesforce`, `salesforce-v2`, `zendesk`, `freshdesk`, `freshchat`, `intercom`, `genesys`, `genesys-messaging`, `talkdesk`, `nice`, `five9`, `amazonconnect`, `servicenow`, `ccaip` or `dynamics`.
 
 Example URLs:
 
