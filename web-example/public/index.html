@@ -287,6 +287,8 @@
           deploymentId: '7ca26301-6f9f-44d6-91b0-e674d0d1d69e'
         })
 
+        CobrowseIO.ignoredViews = ['#genesys-messenger']
+
         // Request cobrowse session button handling
         window.Genesys('subscribe', 'MessagingService.ready', () => {
           const buttonId = '__cbio-genesys-request-button'
