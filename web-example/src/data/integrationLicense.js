@@ -9,5 +9,6 @@ export const licenses = {
   five9: '_lNWvygfLTY0kA',
   talkdesk: 'rV6E9pfNJkxm8w',
   dynamics: 'LErxNk_PrhOqgg',
-  amazonconnect: 'cM6TEJoKz1qLjA'
+  amazonconnect: 'cM6TEJoKz1qLjA',
+  servicenow: 'p6onA5C0NbJ7sg'
 }
