@@ -18,25 +18,25 @@
 
         // A generic consent dialog class
         function Consent() {
-            var container = document.createElement('div');
+            const container = document.createElement('div');
             const template = document.querySelector("#consent")
 
-            this.show = function (title, description) {
-                return new Promise(function (resolve) {
-                    container.innerHTML = template.innerHTML
-                    container.querySelector('.title').textContent = title
-                    container.querySelector('.description').textContent = description
-                    container.querySelector('.cobrowse-allow').addEventListener('click', function () { resolve(true); this.hide() }.bind(this));
-                    container.querySelector('.cobrowse-deny').addEventListener('click', function () { resolve(false); this.hide() }.bind(this));
+            this.show = (title, description) => {
+                return new Promise((resolve) => {
+                    container.innerHTML = template.innerHTML;
+                    container.querySelector('.title').textContent = title;
+                    container.querySelector('.description').textContent = description;
+                    container.querySelector('.cobrowse-allow').addEventListener('click', () => { resolve(true); this.hide(); });
+                    container.querySelector('.cobrowse-deny').addEventListener('click', () => { resolve(false); this.hide(); });
                     if (document.body) document.body.appendChild(container);
-                }.bind(this));
-            }.bind(this);
+                });
+            };
 
-            this.hide = function () {
+            this.hide = () => {
                 if (container.parentNode) {
                     container.parentNode.removeChild(container);
                 }
-            }.bind(this);
+            };
         }
 
         function capitalize(s) {
