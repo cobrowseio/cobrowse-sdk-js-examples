@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example consent prompt</title>
+
+    <script type="module">
+        import CobrowseIO from "https://js.cobrowse.io/CobrowseIO.mjs"
+
+        // FOR SECURITY REASONS DO NOT SET YOUR LICENSE KEY OR API USING QUERY PARAMETERS IN YOUR OWN APPLICATION
+        const urlParams = new URLSearchParams(window.location.search);
+        CobrowseIO.license = urlParams.get('license') || 'trial'; // change to your license key
+        CobrowseIO.api = urlParams.get('api') || 'https://api.cobrowse.io';
+        CobrowseIO.start();
+
+        // A generic consent dialog class
+        function Consent() {
+            var container = document.createElement('div');
+            const template = document.querySelector("#consent")
+
+            this.show = function (title, description) {
+                return new Promise(function (resolve) {
+                    container.innerHTML = template.innerHTML
+                    container.querySelector('.title').textContent = title
+                    container.querySelector('.description').textContent = description
+                    container.querySelector('.cobrowse-allow').addEventListener('click', function () { resolve(true); this.hide() }.bind(this));
+                    container.querySelector('.cobrowse-deny').addEventListener('click', function () { resolve(false); this.hide() }.bind(this));
+                    if (document.body) document.body.appendChild(container);
+                }.bind(this));
+            }.bind(this);
+
+            this.hide = function () {
+                if (container.parentNode) {
+                    container.parentNode.removeChild(container);
+                }
+            }.bind(this);
+        }
+
+        function capitalize(s) {
+            return s.charAt(0).toUpperCase() + s.slice(1)
+        }
+
+        // Integration with Cobrowse
+        CobrowseIO.confirmSession = function (session) {
+            const agent = session.agent?.()?.name ?? "a support agent"
+            return new Consent().show(`Share your screen with ${agent}`, capitalize(`${agent} would like to temporarily use this web page with you.`));
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>Cobrowse.io Custom consent prompt including agent name</h1>
+
+    <p>Begin a session to see the consent prompt</p>
+
+    <template id="consent">
+      <div style="background: rgba(50, 50, 50, 0.4); position: fixed; z-index: 2147483647; bottom: 0; top: 0; left: 0; right: 0">
+        <div style="color: #333; font-family:sans-serif; line-height:140%; position:fixed; padding:25px; background:white; border-radius:15px; z-index:2147483647; top:50px; left:50%; width:75%; max-width:350px; transform:translateX(-50%); box-shadow:0px 0px 15px #33333322;">
+          <div style="text-align:center; margin-top:10px; margin-bottom:20px"><b class="title"></b></div>
+          <div class="description"></div>
+          <div style="float:right; margin-top:40px; color:rgb(0, 122, 255);">
+            <a class="cobrowse-deny" style="cursor:pointer; padding:10px;">Deny</a>
+            <a class="cobrowse-allow" style="cursor:pointer; padding:10px; font-weight: bold;">Allow</a>
+          </div>
+        </div>
+      </div>
+    </template>
+</body>
+
+</html>
