@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>Session indicator example</title>
+
+    <script type="module">
+        import CobrowseIO from "https://js.cobrowse.io/CobrowseIO.mjs"
+
+        // FOR SECURITY REASONS DO NOT SET YOUR LICENSE KEY OR API USING QUERY PARAMETERS IN YOUR OWN APPLICATION
+        const urlParams = new URLSearchParams(window.location.search);
+        CobrowseIO.license = urlParams.get('license') || 'trial'; // change to your license key
+        CobrowseIO.api = urlParams.get('api') || 'https://api.cobrowse.io';
+        CobrowseIO.customData = { device_name: "Session indicator example" }
+
+        // Any elements with the class "redacted" will be redacted
+        CobrowseIO.redactedViews = ['.redacted'];
+
+        // Uncomment to only show the session indicator on the customer side
+        CobrowseIO.ignoredViews = ['.session-indicator'];
+
+        CobrowseIO.start();
+
+        // Functions to enable or disable the session indicator
+        const status = document.getElementById('session-status');
+        const showSessionIndicator = () => {
+            document.body.classList.add('active-session')
+            status.textContent = 'Your screen is being shared with a support agent.';
+        };
+
+        const hideSessionIndicator = () => {
+            document.body.classList.remove('active-session')
+            status.textContent = 'Screen sharing has ended.';
+        };
+
+        // If we are already in a cobrowse session on page load, show the session
+        // indicator before first paint so it never flashes in after render.
+        if (CobrowseIO.currentSession) showSessionIndicator();
+
+        CobrowseIO.showSessionControls = function () {
+            // You should also include a 'End Session' button
+            showSessionIndicator();
+        }
+
+        CobrowseIO.hideSessionControls = function () {
+            hideSessionIndicator()
+        }
+
+        // Only enable transitions after the first frame, so the indicator's
+        // restored state appears instantly rather than fading in on refresh.
+        requestAnimationFrame(() => document.documentElement.classList.add('is-hydrated'));
+    </script>
+</head>
+
+<body>
+    <div class="session-indicator"></div>
+    <p class="visually-hidden" role="status" id="session-status"></p>
+
+    <div class="container">
+        <h1>Session indicator example</h1>
+
+        <section>
+            <h2>This example will show a session indicator to the customer to indicate they are sharing their screen</h2>
+
+            <form id="contact-form" novalidate>
+                <fieldset>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" autocomplete="name" class="redacted" placeholder="Your full name" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" autocomplete="email" class="redacted" placeholder="your@email.com" required>
+
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Type your message here..." required></textarea>
+                    <small>⚠️ Please do not enter any sensitive or personal information in this box.</small>
+
+                    <button type="submit" class="primary">Submit</button>
+                    <p class="form-status" role="status" id="form-status"></p>
+                </fieldset>
+            </form>
+        </section>
+    </div>
+
+    <style>
+        /* Session indicator styling */
+        :root {
+          --color-indicator: #E63946;
+
+          --duration: 150ms;
+          --easing: ease-out;
+        }
+
+        .session-indicator {
+          position: fixed;
+          inset: 0;
+          border: 5px solid var(--color-indicator);
+          box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+          box-sizing: border-box;      /* keeps border inside the viewport */
+          pointer-events: none;        /* clicks/scroll pass straight through */
+          user-select: none;
+          z-index: 2147483647;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        .is-hydrated .session-indicator {
+          transition-property: opacity, visibility;
+          transition-duration: var(--duration);
+          transition-timing-function: var(--easing);
+        }
+
+        .active-session .session-indicator {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .visually-hidden {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          margin: -1px;
+          padding: 0;
+          overflow: hidden;
+          clip-path: inset(50%);
+          white-space: nowrap;
+          border: 0;
+        }
+    </style>
+
+    <script type="module">
+        const form = document.getElementById('contact-form');
+        const formStatus = document.getElementById('form-status');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            formStatus.textContent = 'Thanks - your message has been sent.';
+            form.reset();
+        });
+    </script>
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Stolzl, system-ui, Avenir, Helvetica, Arial, sans-serif;
+            font-size: .875rem;
+            line-height: 1.25rem;
+            color: rgb(4, 13, 60);
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2em;
+            line-height: 2;
+            font-weight: 500;
+            letter-spacing: -0.025em;
+        }
+
+        h2 {
+            font-size: 1rem;
+            line-height: 1.75rem;
+            font-weight: 400;
+            padding-bottom: .5rem;
+        }
+
+        section {
+            min-height: 80px;
+            margin-bottom: 20px;
+        }
+
+        fieldset {
+            padding: 0;
+            border: none;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            color: rgb(14, 12, 38);
+            background-color: rgb(246, 246, 247);
+            margin-bottom: 1rem;
+            padding: .5rem 0.75rem;
+            border: 1px solid transparent;
+            border-radius: 0.5rem;
+            outline-width: 1px;
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        input:hover,
+        textarea:hover {
+            box-shadow: 0 0 #0000, 0 0 #0000, inset 0 0 0 1px #C7CBFE;
+        }
+
+        input:focus,
+        textarea:focus {
+            box-shadow: 0 0 #0000, 0 0 #0000, inset 0 0 0 1px #6556F0;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(111, 109, 130, .5);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        small {
+            display: block;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            color: rgba(111, 109, 130, .75);
+        }
+
+        button {
+            color: rgb(14 12 38);
+            background-color: rgb(246 245 247);
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            cursor: pointer;
+            height: 2.5rem;
+            margin: 0;
+            padding: 0 1rem;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            background-color: rgb(238 239 241);
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        .primary {
+            color: rgb(246, 245, 247);
+            background-color: rgb(101, 86, 240);
+        }
+
+        .primary:hover {
+            background-color: rgb(65, 38, 167);
+        }
+
+        /* Reserve the line's height up front so confirming the form doesn't
+           push the page around. */
+        .form-status {
+            min-height: 1.25rem;
+            margin-top: 0.75rem;
+            font-size: 0.8125rem;
+            line-height: 1.25rem;
+            color: rgba(111, 109, 130, 0.75);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                padding: 0 0.5rem;
+            }
+
+            body {
+                padding: 0.5rem;
+            }
+
+            h1 {
+                font-size: 1.75em;
+                text-align: center;
+            }
+
+            h2 {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.25rem;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            input,
+            textarea {
+                padding: 0.75rem;
+                font-size: 1rem;
+            }
+
+            button {
+                width: 100%;
+                height: 3rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</body>
+
+</html>
