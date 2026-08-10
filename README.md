@@ -57,7 +57,16 @@ Demo page at [https://cobrowse-sdk-js-examples.cbrws.io/redaction-indicator.html
 
 Documentation at [https://docs.cobrowse.io/sdk-features/redact-sensitive-data](https://docs.cobrowse.io/sdk-features/redact-sensitive-data)
 
+## Session indicator
+
+An example of showing a session indicator to the customer so they are aware that they are sharing their screen.
+
+Demo page at [https://cobrowse-sdk-js-examples.cbrws.io/session-indicator.html](https://cobrowse-sdk-js-examples.cbrws.io/session-indicator.html)
+
+Documentation at [https://docs.cobrowse.io/sdk-features/listening-for-events](https://docs.cobrowse.io/sdk-features/listening-for-events)
+
 ## Full device mode by default
+
 Demo page at [https://cobrowse-sdk-js-examples.cbrws.io/full-device-by-default.html](https://cobrowse-sdk-js-examples.cbrws.io/full-device-by-default.html)
 
 Documentation at [https://docs.cobrowse.io/sdk-features/full-device-capabilities](https://docs.cobrowse.io/sdk-features/full-device-capabilities)
@@ -173,7 +182,7 @@ Demo page at [https://cobrowse-sdk-js-examples.cbrws.io/agent-present-mode/agent
 
 Documentation at [https://support.cobrowse.io/agent-present-mode](https://support.cobrowse.io/agent-present-mode)
 
-This demo requires a local web server like VSCode Live Server, node http.server or Python SimpleHTTPServer (http.server for Puython 3).
+This demo requires a local web server like VSCode Live Server, node http.server or Python SimpleHTTPServer (http.server for Python 3).
 
 1. Clone the repo, launch your local web server and access the page agent-present-mode/agent-present-mode-ui.html in your browser.
 2. Replace CobrowseIO.license with your license key (register a new account at [https://cobrowse.io/register](https://cobrowse.io/register)).
