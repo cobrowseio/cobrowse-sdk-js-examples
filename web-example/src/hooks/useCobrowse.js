@@ -5,7 +5,16 @@ import { licenseForIntegration } from '../utils/licenseForIntegration'
 export const useCobrowse = () => {
   const [CobrowseIO, setCobrowseIO] = useState()
   const [cobrowsing, setCobrowsing] = useState(() => CobrowseIO?.currentSession?.isActive())
+  const [consentRequest, setConsentRequest] = useState(null)
   const cobrowseStarted = useRef(false)
+  const consentResolver = useRef(null)
+
+  const respondToConsent = useCallback((allowed) => {
+    consentResolver.current?.(allowed)
+    consentResolver.current = null
+
+    setConsentRequest(null)
+  }, [])
 
   useEffect(() => {
     const onCobrowseLoaded = async () => {
@@ -36,6 +45,7 @@ export const useCobrowse = () => {
     }
     const onCobrowseEnd = (session) => {
       setCobrowsing(false)
+      respondToConsent(false)
     }
 
     CobrowseIO.on('session.updated', onCobrowseStart)
@@ -45,7 +55,7 @@ export const useCobrowse = () => {
       CobrowseIO?.off('session.updated', onCobrowseStart)
       CobrowseIO?.off('session.ended', onCobrowseEnd)
     }
-  }, [CobrowseIO])
+  }, [CobrowseIO, respondToConsent])
 
   const start = useCallback(({ api, license, redactedViews, unredactedViews, ignoredViews, customData, capabilities, sessionCode, allowHeadless = false, customSessionControls = false, registration = true, integration } = {}) => {
     if (!CobrowseIO || cobrowseStarted.current) {
@@ -88,6 +98,17 @@ export const useCobrowse = () => {
       .flatMap(category => category.businesses)
       .filter(business => business.url)
       .map(business => new URL(business.url).origin + '/*')
+
+    const requestConsent = (request) => {
+      return new Promise((resolve) => {
+        consentResolver.current = resolve
+        setConsentRequest(request)
+      })
+    }
+
+    CobrowseIO.confirmSession = () => requestConsent('session')
+    CobrowseIO.confirmRemoteControl = () => requestConsent('remoteControl')
+    CobrowseIO.confirmFullDevice = () => requestConsent('fullDevice')
 
     if (customSessionControls) {
       CobrowseIO.showSessionControls = () => true
@@ -146,6 +167,8 @@ export const useCobrowse = () => {
 
   return {
     cobrowsing,
+    consentRequest,
+    respondToConsent,
     start,
     stop,
     endSession,
