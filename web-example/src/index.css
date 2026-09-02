@@ -15,6 +15,7 @@
   --font-size-xl: 22px;
   --font-size-xxl: 28px;
   --font-weight-medium: 500;
+  --font-weight-bold: 700;
   --font-weight-regular: 400;
   --font-weight-light: 300;
 
@@ -24,6 +25,10 @@
   --color-borders: #cccccc;
   --color-background: #f7f6ff;
   --color-text: #555555;
+  --color-text-strong: #000000;
+  --color-text-muted: #474765;
+  --color-danger: #ef4343;
+  --color-divider: #eeeff1;
 
   --container-spacing: 10px;
 }
