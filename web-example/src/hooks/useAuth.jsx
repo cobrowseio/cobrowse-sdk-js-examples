@@ -1,5 +1,5 @@
 import { useLocalStorage } from './useLocalStorage'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 import { createContext, useCallback, useContext, useMemo } from 'react'
 
 const AuthContext = createContext(null)

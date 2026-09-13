@@ -1,9 +1,15 @@
 import { CodeEntry as CbCodeEntry } from 'cobrowse-agent-ui'
-import './CodeEntry.module.css'
+import 'cobrowse-agent-ui/style.css'
+import styles from './CodeEntry.module.css'
 
 const CodeEntry = ({ onCode }) => {
   return (
-    <CbCodeEntry onCode={onCode} />
+    <CbCodeEntry
+      className={styles.root}
+      inputClassName={styles.input}
+      label={false}
+      onCode={onCode}
+    />
   )
 }
 

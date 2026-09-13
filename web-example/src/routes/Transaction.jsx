@@ -1,5 +1,5 @@
 import { getTransaction } from '../utils/transactions'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData } from 'react-router'
 import TransactionDetails from '../components/TransactionDetails'
 import styles from './Transaction.module.css'
 
