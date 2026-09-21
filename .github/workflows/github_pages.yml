@@ -17,6 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
         
@@ -32,7 +37,7 @@ jobs:
           npm install
           npm run build
           sudo mkdir -p ../_site/web-example/demo
-          sudo mv build/* ../_site/web-example/demo
+          sudo mv dist/* ../_site/web-example/demo
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

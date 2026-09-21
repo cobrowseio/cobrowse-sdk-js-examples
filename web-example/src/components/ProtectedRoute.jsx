@@ -1,6 +1,6 @@
 import { useAuth } from '../hooks/useAuth'
 import { useEffect } from 'react'
-import { useLocation, useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { useLocation, useNavigate, useRouteLoaderData } from 'react-router'
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth()

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Outlet } from 'react-router'
+import { RouterProvider } from 'react-router/dom'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './hooks/useAuth'
 import { useCobrowse } from './hooks/useCobrowse'

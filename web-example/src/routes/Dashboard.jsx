@@ -1,5 +1,5 @@
 import { currentMonth, getTransactions, groupByCategory, groupByMonth } from '../utils/transactions'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData } from 'react-router'
 import { categories } from '../data/categories'
 import Chart from '../components/Chart'
 import styles from './Dashboard.module.css'

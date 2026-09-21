@@ -1,5 +1,4 @@
-/*noinspection CssInvalidAtRule*/
-@import-normalize;
+@import 'normalize.css';
 
 /* Screen sizes */
 /* sm: '480px'  */

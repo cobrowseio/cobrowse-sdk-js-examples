@@ -1,4 +1,4 @@
-import { Link as NavLink, useLocation } from 'react-router-dom'
+import { Link as NavLink, useLocation } from 'react-router'
 import styles from './Link.module.css'
 
 const Link = ({ to, className = '', appendQueryString = true, children, ...props }) => {
