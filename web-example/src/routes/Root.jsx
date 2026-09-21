@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router'
 import Content from '../components/Content'
 import Header from '../components/Header'
 import { getQueryParam } from '../utils/getQueryParam'

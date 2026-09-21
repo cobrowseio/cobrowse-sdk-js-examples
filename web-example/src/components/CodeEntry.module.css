@@ -1,4 +1,8 @@
-:global(.CodeEntry > div > input[type="number"]) {
+.root {
+  justify-content: center;
+}
+
+.input {
   height: 48px;
   width: 48px;
   border: 1px solid var(--color-borders);
