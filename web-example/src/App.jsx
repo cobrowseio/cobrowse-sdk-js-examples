@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { createBrowserRouter, Outlet } from 'react-router'
 import { RouterProvider } from 'react-router/dom'
+import ConsentPrompt from './components/ConsentPrompt'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './hooks/useAuth'
 import { useCobrowse } from './hooks/useCobrowse'
@@ -91,7 +92,7 @@ const router = createBrowserRouter([
 })
 
 const App = () => {
-  const { start } = useCobrowse()
+  const { start, consentRequest, respondToConsent } = useCobrowse()
 
   useEffect(() => {
     start({
@@ -111,7 +112,10 @@ const App = () => {
   }, [start])
 
   return (
-    <RouterProvider router={router} />
+    <>
+      <RouterProvider router={router} />
+      <ConsentPrompt request={consentRequest} onRespond={respondToConsent} />
+    </>
   )
 }
 
