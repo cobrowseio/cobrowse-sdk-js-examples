@@ -22,11 +22,12 @@ const TransactionDetails = ({ transaction }) => {
         doubleClickZoom: false,
         scrollWheelZoom: false,
         boxZoom: false,
-        zoomControl: false,
-        attributionControl: false
+        zoomControl: false
       })
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map)
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map)
 
       const markerIcon = new L.Icon({
         iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-violet.png',
