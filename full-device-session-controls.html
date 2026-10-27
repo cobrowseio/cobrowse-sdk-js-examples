@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>Full device session controls example</title>
+
+    <script type="module">
+        import CobrowseIO from "https://js.cobrowse.io/CobrowseIO.mjs"
+
+        // FOR SECURITY REASONS DO NOT SET YOUR LICENSE KEY OR API USING QUERY PARAMETERS IN YOUR OWN APPLICATION
+        const urlParams = new URLSearchParams(window.location.search);
+        CobrowseIO.license = urlParams.get('license') || 'trial'; // change to your license key
+        CobrowseIO.api = urlParams.get('api') || 'https://api.cobrowse.io';
+        CobrowseIO.customData = { device_name: "Full device session controls example" }
+
+        CobrowseIO.ignoredViews = ['.session-controls'];
+
+        // Instead of a session confirmation prompt, switch the session into full device mode
+        CobrowseIO.confirmSession = (session) => session.setFullDevice('requested');
+
+        const controls = document.getElementById('session-controls');
+        const disconnectButton = document.getElementById('disconnect');
+        const endFullDeviceButton = document.getElementById('end-full-device');
+        const endSessionButton = document.getElementById('end-session');
+
+        const setExpanded = (expanded) => {
+            controls.classList.toggle('expanded', expanded);
+            disconnectButton.setAttribute('aria-expanded', expanded);
+        }
+
+        // Outside of full device mode there is only one thing to stop, so end the session straight away
+        disconnectButton.addEventListener('click', () => {
+            if (CobrowseIO.currentSession?.fullDevice()) setExpanded(!controls.classList.contains('expanded'));
+            else CobrowseIO.currentSession?.end();
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!controls.contains(event.target)) setExpanded(false);
+        });
+
+        // Stops sharing the screen and returns to sharing only this page, the session stays active
+        endFullDeviceButton.addEventListener('click', () => {
+            setExpanded(false);
+            CobrowseIO.currentSession?.setFullDevice('off');
+        });
+
+        endSessionButton.addEventListener('click', () => {
+            setExpanded(false);
+            CobrowseIO.currentSession?.end();
+        });
+
+        // Called whenever the active session is updated, including when full device mode changes
+        CobrowseIO.showSessionControls = () => {
+            controls.hidden = false;
+            if (!CobrowseIO.currentSession?.fullDevice()) setExpanded(false);
+        }
+
+        CobrowseIO.hideSessionControls = () => {
+            controls.hidden = true;
+            setExpanded(false);
+        }
+
+        CobrowseIO.start();
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Full device session controls example</h1>
+
+        <section>
+            <h2>This example replaces the default session controls with an end button that, in full device mode, lets the customer choose between "Stop sharing screen" and "End session"</h2>
+
+            <p>
+                In full device mode the browser shows its own "Stop sharing" button, which only stops sharing the screen.
+                Showing a dedicated button for each action makes it clear to the customer whether they are leaving full
+                device mode or ending the Cobrowse session.
+            </p>
+        </section>
+    </div>
+
+    <div class="session-controls" id="session-controls" hidden>
+        <div class="session-controls-menu">
+            <button type="button" class="stop-sharing" id="end-full-device">Stop sharing screen</button>
+            <button type="button" class="end-session" id="end-session">End session</button>
+        </div>
+        <button type="button" class="disconnect" id="disconnect" title="End session" aria-expanded="false">
+            <span class="visually-hidden">End session</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M20.9964 12.5895C21.1528 12.4331 21.2406 12.2211 21.2406 12C21.2406 11.7872 21.1593 11.5829 21.0138 11.4285C18.518 9.23023 15.3059 8.01707 11.9793 8.01707C8.65261 8.01707 5.44055 9.23023 2.94474 11.4285C2.7993 11.5829 2.71797 11.7872 2.71797 12C2.71797 12.2211 2.8058 12.4331 2.96214 12.5895L5.07653 14.7039L8.20945 13.3612L7.76772 11.5943C7.6415 11.0894 7.92363 10.5721 8.41645 10.4048C10.7269 9.62055 13.2316 9.62055 15.5421 10.4048C16.0349 10.5721 16.3171 11.0894 16.1908 11.5943L15.7491 13.3612L18.882 14.7039L20.9964 12.5895ZM23.2406 12C23.2406 12.7515 22.942 13.4723 22.4106 14.0037L19.8175 16.5968C19.5284 16.8859 19.0923 16.9699 18.7165 16.8088L14.1785 14.864C13.7274 14.6707 13.4832 14.1785 13.6023 13.7023L14.0159 12.0478C12.6758 11.7395 11.2828 11.7395 9.94266 12.0478L10.3563 13.7023C10.4753 14.1785 10.2312 14.6707 9.78006 14.864L5.24208 16.8088C4.86624 16.9699 4.43019 16.8859 4.14106 16.5968L1.54792 14.0037C1.01651 13.4723 0.717975 12.7515 0.717976 12C0.717975 11.2485 1.01651 10.5277 1.54792 9.99633C1.56223 9.98202 1.57697 9.96815 1.59212 9.95474C4.45744 7.41772 8.1522 6.01707 11.9793 6.01707C15.8064 6.01707 19.5011 7.41772 22.3664 9.95474C22.3816 9.96815 22.3963 9.98202 22.4106 9.99633C22.942 10.5277 23.2406 11.2485 23.2406 12Z" fill="currentColor"/>
+            </svg>
+        </button>
+    </div>
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Stolzl, system-ui, Avenir, Helvetica, Arial, sans-serif;
+            font-size: .875rem;
+            line-height: 1.25rem;
+            color: rgb(4, 13, 60);
+            margin: 0;
+            padding: 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2em;
+            line-height: 2;
+            font-weight: 500;
+            letter-spacing: -0.025em;
+        }
+
+        h2 {
+            font-size: 1rem;
+            line-height: 1.75rem;
+            font-weight: 400;
+            padding-bottom: .5rem;
+        }
+
+        section {
+            min-height: 80px;
+            margin-bottom: 20px;
+        }
+
+        .session-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2147483647;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .session-controls[hidden] {
+            display: none;
+        }
+
+        .session-controls-menu {
+            position: absolute;
+            bottom: 3.5rem;
+            display: flex;
+            gap: 0.25rem;
+            padding: 0.25rem;
+            border-radius: 9999px;
+            background-color: rgb(30, 41, 59);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 200ms ease-in-out;
+        }
+
+        .session-controls.expanded .session-controls-menu {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .session-controls-menu button {
+            height: auto;
+            padding: 0.75rem 1rem;
+            border-radius: 1.5rem;
+            color: white;
+        }
+
+        .session-controls .stop-sharing {
+            background-color: rgb(15, 23, 42);
+        }
+
+        .session-controls .stop-sharing:hover {
+            background-color: rgb(2, 6, 23);
+        }
+
+        .session-controls .end-session,
+        .session-controls .disconnect {
+            background-color: rgb(185, 28, 28);
+        }
+
+        .session-controls .end-session:hover,
+        .session-controls .disconnect:hover {
+            background-color: rgb(220, 38, 38);
+        }
+
+        .session-controls .disconnect {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 2.75rem;
+            min-width: 4rem;
+            border-radius: 9999px;
+            color: white;
+            box-shadow: 0px 2px 10px #33333344;
+        }
+
+        .session-controls.expanded .disconnect {
+            background-color: rgb(30, 41, 59);
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        button {
+            color: rgb(14 12 38);
+            background-color: rgb(246 245 247);
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            cursor: pointer;
+            height: 2.5rem;
+            margin: 0;
+            padding: 0 1rem;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            background-color: rgb(238 239 241);
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                padding: 0 0.5rem;
+            }
+
+            body {
+                padding: 0.5rem;
+            }
+
+            h1 {
+                font-size: 1.75em;
+                text-align: center;
+            }
+
+            h2 {
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+
+</html>

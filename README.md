@@ -85,6 +85,19 @@ Documentation at [https://docs.cobrowse.io/sdk-features/customize-the-interface/
 2. Replace CobrowseIO.license with your license key (register a new account at [https://cobrowse.io/register](https://cobrowse.io/register)).
 3. Deploy as a standalone page, or embed similar html, css, and javascript in your site.
 
+## Full device session controls
+
+An example of customizing the session controls so that, in full device mode, the end button expands to let the customer choose between "Stop sharing screen" and "End session", so the customer doesn't confuse the browser's "Stop sharing" button with ending the Cobrowse session.
+
+Demo page at [https://cobrowse-sdk-js-examples.cbrws.io/full-device-session-controls.html](https://cobrowse-sdk-js-examples.cbrws.io/full-device-session-controls.html)
+
+Documentation at [https://docs.cobrowse.io/sdk-features/customize-the-interface/customize-session-controls](https://docs.cobrowse.io/sdk-features/customize-the-interface/customize-session-controls)
+
+1. Clone the repo, and open full-device-session-controls.html in your browser.
+2. Replace CobrowseIO.license with your license key (register a new account at [https://cobrowse.io/register](https://cobrowse.io/register)).
+3. Begin a session and share your screen. Click the end button, then "Stop sharing screen" to return to sharing only the page, or "End session" to end the Cobrowse session.
+4. Deploy as a standalone page, or embed similar html, css, and javascript in your site.
+
 ## UI Customization (translation)
 Demo page at [https://cobrowse-sdk-js-examples.cbrws.io/message-translation.html](https://cobrowse-sdk-js-examples.cbrws.io/message-translation.html)
 
